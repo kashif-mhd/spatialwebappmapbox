@@ -22,5 +22,9 @@
   },
   "include": [
     "src"
-  ]
+  ],
+   "baseUrl": ".",
+      "paths": {
+      "@utils": ["src/lib/utils"]
+    }
 }
