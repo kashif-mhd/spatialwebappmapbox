@@ -15,12 +15,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "../../components/ui/avatar"
 
 const Topbar = () => {
   return (
-    <div className='py-2 px-6 bg-primary/5 flex items-center justify-between'>
+    <div className='py-2 px-6 bg-white flex items-center justify-between shadow'>
       <div className="flex items-center gap-x-2">
           <Button variant="ghost" size="icon">
             <Menu  className="h-6 w-6" />
           </Button>
-          <span className='font-semibold text-xl'>Dashboard</span>
       </div>
       <DropdownMenu>
       <DropdownMenuTrigger className='inline-flex items-center gap-4 text-sm'>
