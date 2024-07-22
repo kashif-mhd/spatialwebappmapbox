@@ -8,12 +8,24 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu"
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
+} from "../../components/ui/dropdown-menu"
+import { Avatar, AvatarFallback, AvatarImage } from "../../components/ui/avatar"
+import { useAuth } from '../../hooks/useAuth'
 
 
 
 const Topbar = () => {
+
+  const {signOut} = useAuth();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+    } catch (error) {
+      alert((error as Error).message);
+    }
+  };
+
   return (
     <div className='py-2 px-6 bg-white flex items-center justify-between shadow'>
       <div className="flex items-center gap-x-2">
@@ -32,7 +44,7 @@ const Topbar = () => {
       <DropdownMenuContent>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Logout</DropdownMenuItem>
+        <DropdownMenuItem onClick={handleSignOut}>Logout</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
 

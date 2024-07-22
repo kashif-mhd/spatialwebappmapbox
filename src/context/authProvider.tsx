@@ -49,8 +49,10 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const signOut = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
+    setUser(null);
+    localStorage.clear();
   };
-
+  
   const resetPassword = async (email: string) => {
     const { error } = await supabase.auth.resetPasswordForEmail(email);
     if (error) throw error;
