@@ -7,8 +7,9 @@ import { Label } from "../../components/ui/label"
 import { Button } from '../../components/ui/button'
 
 const ForgotPassword: React.FC = () => {
-  const [email, setEmail] = useState('');
   const { resetPassword } = useAuth();
+  
+  const [email, setEmail] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

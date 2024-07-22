@@ -9,9 +9,10 @@ import { Label } from "../../components/ui/label"
 import { Button } from '../../components/ui/button'
 
 const Signup: React.FC = () => {
+  const { signUp } = useAuth();
+  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { signUp } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

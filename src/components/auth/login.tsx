@@ -8,18 +8,21 @@ import { Label } from "../../components/ui/label"
 
 import { Button } from '../../components/ui/button'
 import { Checkbox } from "../../components/ui/checkbox"
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 const Login: React.FC = () => {
+  const navigate = useNavigate();
+  const { signIn } = useAuth();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { signIn } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await signIn(email, password);
+      navigate('/dashboard');
       alert('Logged in successfully');
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
