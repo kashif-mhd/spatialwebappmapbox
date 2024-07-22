@@ -1,13 +1,12 @@
 import React from "react";
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-} from "../components/ui/dropdown-menu";
-import { Button } from "../components/ui/button";
+} from "./ui/dropdown-menu";
+import { Button } from "./ui/button";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { Row } from "@tanstack/react-table";
 

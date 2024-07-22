@@ -1,14 +1,12 @@
 import React from 'react'
-import { Combobox } from '../../component/Combobox'
-import Container from '../../component/Container'
+import { Combobox } from '../../components/Combobox'
+import Container from '../../components/Container'
 import { Card, CardContent, CardHeader } from '../../components/ui/card'
 import { Label } from '../../components/ui/label'
 import { Input } from '../../components/ui/input'
-import { DatePicker } from '../../component/DatePicker'
+import { DatePicker } from '../../components/DatePicker'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/tabs"
 import { CstTable } from './table/CstTable'
-import SheetMain from '../../component/SheetMain'
-
 
 const frameworks = [
   {
@@ -35,7 +33,6 @@ const frameworks = [
 
 const Details = () => {
 
-  const [date, setDate] = React.useState<Date | undefined>(new Date())
   return (
     <Container>
       <div className='px-6'>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from '../../components/ui/button'
+import { Button } from '../ui/button'
 import { Menu } from 'lucide-react'
 import {
   DropdownMenu,
@@ -8,8 +8,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../../components/ui/dropdown-menu"
-import { Avatar, AvatarFallback, AvatarImage } from "../../components/ui/avatar"
+} from "../ui/dropdown-menu"
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 
 
 

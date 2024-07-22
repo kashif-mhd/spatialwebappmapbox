@@ -1,12 +1,13 @@
 
 import React, { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
-import OnBoarding from '../../component/OnBoarding';
+import OnBoarding from '../OnBoarding';
 
 import { Input } from "../../components/ui/input"
 import { Label } from "../../components/ui/label"
 
 import { Button } from '../../components/ui/button'
+import { Link } from 'react-router-dom';
 
 const Signup: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -52,7 +53,9 @@ const Signup: React.FC = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />    </div>
-            <Button type="submit" variant="destructive" className='w-full bg-primary'>Signup</Button>
+            <Button type="submit" variant="destructive" className='w-full bg-primary'>Sign up</Button>
+            
+            <p>Already have an account ? <Link to="/login" className='font-semibold text-primary'>Sign in</Link></p>
           </form>
         </div>
       </div>

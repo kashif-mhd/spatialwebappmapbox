@@ -1,5 +1,5 @@
 
-import Container from '../../component/Container'
+import Container from '../../components/Container'
 import { Button } from '../../components/ui/button'
 import { Card, CardContent } from '../../components/ui/card'
 

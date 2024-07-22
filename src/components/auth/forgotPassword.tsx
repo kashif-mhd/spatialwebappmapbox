@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
-import OnBoarding from '../../component/OnBoarding';
+import OnBoarding from '../OnBoarding';
 
 import { Input } from "../../components/ui/input"
 import { Label } from "../../components/ui/label"

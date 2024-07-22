@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import Sidebar from './layout/Sidebar'
 import Topbar from './layout/Topbar'
 const Container =  ({ children }: { children: ReactNode })  => {

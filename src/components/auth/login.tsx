@@ -1,7 +1,7 @@
 // src/components/Auth/Login.tsx
 import React, { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
-import OnBoarding from '../../component/OnBoarding';
+import OnBoarding from '../OnBoarding';
 
 import { Input } from "../../components/ui/input"
 import { Label } from "../../components/ui/label"
@@ -69,7 +69,8 @@ const Login: React.FC = () => {
               </div>
               <Link to="#" className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot password?</Link>
             </div>
-            <Button type="submit" variant="destructive" className='w-full bg-primary'>Login</Button>
+            <Button type="submit" variant="destructive" className='w-full bg-primary'>Sign in</Button>
+            <p>Don't have an account ? <Link to="/signup" className='font-semibold text-primary'>Sign Up</Link></p>
           </form>
         </div>
       </div>

@@ -2,7 +2,6 @@ import React from "react";
 import {
   CaretSortIcon,
   ChevronDownIcon,
-  DotsHorizontalIcon,
 } from "@radix-ui/react-icons";
 import {
   ColumnDef,
@@ -15,7 +14,6 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-  Row,
 } from "@tanstack/react-table";
 
 import { Button } from "../../../components/ui/button";
@@ -24,9 +22,6 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../../../components/ui/dropdown-menu";
 import { Input } from "../../../components/ui/input";
@@ -38,8 +33,8 @@ import {
   TableHeader,
   TableRow,
 } from "../../../components/ui/table";
-import DropdownMenuCst from "../../../component/DropdownMenuCst";
-import SheetMain from "../../../component/SheetMain";
+import DropdownMenuCst from "../../../components/DropdownMenuCst";
+import SheetMain from "../../../components/SheetMain";
 
 const data: Payment[] = [
   {
