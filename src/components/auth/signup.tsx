@@ -31,7 +31,7 @@ const Signup: React.FC = () => {
           <div className="text-center">
             <img src="./images/logo.svg" alt="" className='h-12 mb-8 inline-block' />
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              Sign in to your account
+             Create a new account
             </h1>
           </div>
           <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4">
@@ -52,7 +52,7 @@ const Signup: React.FC = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />    </div>
-            <Button type="submit" variant="destructive" className='w-full bg-primary'>Login</Button>
+            <Button type="submit" variant="destructive" className='w-full bg-primary'>Signup</Button>
           </form>
         </div>
       </div>
