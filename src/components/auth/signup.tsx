@@ -7,9 +7,10 @@ import { Input } from "../../components/ui/input"
 import { Label } from "../../components/ui/label"
 
 import { Button } from '../../components/ui/button'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Signup: React.FC = () => {
+  const navigate = useNavigate();
   const { signUp } = useAuth();
   
   const [email, setEmail] = useState('');
@@ -19,6 +20,7 @@ const Signup: React.FC = () => {
     e.preventDefault();
     try {
       await signUp(email, password);
+      navigate('/login');
       alert('Signed up successfully');
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';

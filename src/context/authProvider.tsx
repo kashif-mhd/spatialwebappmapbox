@@ -6,7 +6,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import supabase from "../services/supabaseClient";
+import supabase from "../services/SupabaseClient";
 
 export interface AuthContextType {
   user: any;
