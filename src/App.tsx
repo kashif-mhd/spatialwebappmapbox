@@ -49,9 +49,9 @@ const App: React.FC = () => {
         <Route
           path="/detail"
           element={
-            <ProtectedRoute>
+            <PublicRoute>
               <Details />
-            </ProtectedRoute>
+            </PublicRoute>
           }
         />
         <Route path="/" element={<Navigate to="/login" />} />
