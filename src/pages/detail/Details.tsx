@@ -203,7 +203,7 @@ const detailChattelsColumns: ColumnDef<DetailChattelsData>[] = [
 
 const Details = () => {
   return (
-    <Container>
+  <Container>
       <div className='px-6'>
         <div className='py-3'>
           <span className='font-semibold text-xl'>Dashboard</span>
@@ -212,51 +212,51 @@ const Details = () => {
           <div className="grid gap-4">
             <Card className='p-3'>
               <div className="grid grid-cols-4 gap-3">
-                <div>
+                <div >
                   <Label htmlFor="" className='block mb-2'>Vender/Purchaser</Label>
-                  <div>
+                  <div >
                     <Combobox frameworks={frameworks} />
                   </div>
                 </div>
-                <div>
+                <div >
                   <Label htmlFor="" className='block mb-2'>Street No:</Label>
-                  <div>
+                  <div >
                     <Input type="text" placeholder="" />
                   </div>
                 </div>
-                <div>
+                <div >
                   <Label htmlFor="" className='block mb-2'>Address:</Label>
-                  <div>
+                  <div >
                     <Input type="text" placeholder="" />
                   </div>
                 </div>
-                <div>
+                <div >
                   <Label htmlFor="" className='block mb-2'>Property Name:</Label>
-                  <div>
+                  <div >
                     <Input type="text" placeholder="" />
                   </div>
                 </div>
-                <div>
+                <div >
                   <Label htmlFor="" className='block mb-2'>Distance:</Label>
-                  <div>
+                  <div >
                     <Input type="text" placeholder="" value={"17km N of Tokoroa "} disabled />
                   </div>
                 </div>
-                <div>
+                <div >
                   <Label htmlFor="" className='block mb-2'>Sale Date:</Label>
-                  <div>
+                  <div >
                     <DatePicker />
                   </div>
                 </div>
-                <div>
+                <div >
                   <Label htmlFor="" className='block mb-2'>RT:</Label>
-                  <div>
+                  <div >
                     <Input type="text" placeholder="" />
                   </div>
                 </div>
-                <div>
+                <div >
                   <Label htmlFor="" className='block mb-2'>Use:</Label>
-                  <div>
+                  <div >
                     <Combobox frameworks={frameworks} />
                   </div>
                 </div>
@@ -265,162 +265,166 @@ const Details = () => {
 
             <Card className='p-3'>
               <div className="grid grid-cols-4 gap-3">
-                <div>
+                <div >
                   <Label htmlFor="" className='block mb-2'>Relationship:</Label>
-                  <div>
+                  <div >
                     <Input type="text" placeholder="" />
                   </div>
                 </div>
-                <div>
+                <div >
                   <Label htmlFor="" className='block mb-2'>Total Area:</Label>
-                  <div>
+                  <div >
                     <Input type="text" placeholder="" />
                   </div>
                 </div>
-                <div>
+                <div >
                   <Label htmlFor="" className='block mb-2'>Roll:</Label>
-                  <div>
+                  <div >
                     <Input type="text" placeholder="" />
                   </div>
                 </div>
-                <div>
+                <div >
                   <Label htmlFor="" className='block mb-2'>GCV:</Label>
-                  <div>
+                  <div >
                     <Input type="text" placeholder="" />
                   </div>
                 </div>
-                <div>
+ <div >
                   <Label htmlFor="" className='block mb-2'>Analysed By:</Label>
-                  <div>
+                  <div >
                     <Combobox frameworks={frameworks} />
                   </div>
                 </div>
+           
               </div>
+          
             </Card>
-
             <Card className='p-3'>
+              
               <div className="grid grid-cols-3 gap-3">
-                <div>
+                     <div >
                   <Label htmlFor="" className='block mb-2'>Tenure:</Label>
-                  <div>
+                  <div >
                     <Combobox frameworks={frameworks} />
                   </div>
                 </div>
-                <div>
+                <div >
                   <Label htmlFor="" className='block mb-2'>GLV:</Label>
-                  <div>
+                  <div >
                     <Input type="text" placeholder="" />
                   </div>
                 </div>
-                <div>
+                <div >
                   <Label htmlFor="" className='block mb-2'>Analyses Status:</Label>
-                  <div>
+                  <div >
                     <Combobox frameworks={frameworks} />
                   </div>
                 </div>
+
               </div>
             </Card>
-
             <Card className='p-3'>
+              
               <div className="grid grid-cols-4 gap-3 ">
-                <div>
+                     <div >
                   <Label htmlFor="" className='block mb-2'>Gross Sale Price:</Label>
-                  <div>
+                  <div >
                     <Input type="text" placeholder="" />
                   </div>
                 </div>
-                <div>
+                <div >
                   <Label htmlFor="" className='block mb-2'>Ineff Area:</Label>
-                  <div>
+                  <div >
                     <Input type="text" placeholder="" />
                   </div>
                 </div>
-                <div>
+                <div >
                   <Label htmlFor="" className='block mb-2'>Date:</Label>
-                  <div>
-                    <DatePicker />
+                  <div >
+                    <DatePicker/>
                   </div>
                 </div>
-                <div>
+                  <div >
                   <Label htmlFor="" className='block mb-2'>Date Analysed:</Label>
-                  <div>
-                    <DatePicker />
+                  <div >
+                    <DatePicker/>
                   </div>
                 </div>
+
               </div>
             </Card>
-
             <div className="grid grid-cols-2 gap-4">
-              <Card className='p-3'>
+               <Card className='p-3'>
                 <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="" className='block mb-2'>Gross Sale Price:</Label>
-                    <div>
-                      <Input type="text" placeholder="" />
-                    </div>
-                  </div>
-                  <div>
-                    <Label htmlFor="" className='block mb-2'>Ineff Area:</Label>
-                    <div>
-                      <Input type="text" placeholder="" />
-                    </div>
-                  </div>
-                  <div>
-                    <Label htmlFor="" className='block mb-2'>Date:</Label>
-                    <div>
-                      <DatePicker />
-                    </div>
-                  </div>
-                  <div>
-                    <Label htmlFor="" className='block mb-2'>Date Analysed:</Label>
-                    <div>
-                      <DatePicker />
-                    </div>
+                   <div >
+                  <Label htmlFor="" className='block mb-2'>Gross Sale Price:</Label>
+                  <div >
+                    <Input type="text" placeholder="" />
                   </div>
                 </div>
-              </Card>
-              <Card className='p-3'>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="" className='block mb-2'>Gross Sale Price:</Label>
-                    <div>
-                      <Input type="text" placeholder="" />
-                    </div>
-                  </div>
-                  <div>
-                    <Label htmlFor="" className='block mb-2'>Ineff Area:</Label>
-                    <div>
-                      <Input type="text" placeholder="" />
-                    </div>
-                  </div>
-                  <div>
-                    <Label htmlFor="" className='block mb-2'>Date:</Label>
-                    <div>
-                      <DatePicker />
-                    </div>
-                  </div>
-                  <div>
-                    <Label htmlFor="" className='block mb-2'>Date Analysed:</Label>
-                    <div>
-                      <DatePicker />
-                    </div>
+                <div >
+                  <Label htmlFor="" className='block mb-2'>Ineff Area:</Label>
+                  <div >
+                    <Input type="text" placeholder="" />
                   </div>
                 </div>
-              </Card>
+                <div >
+                  <Label htmlFor="" className='block mb-2'>Date:</Label>
+                  <div >
+                    <DatePicker/>
+                  </div>
+                </div>
+                  <div >
+                  <Label htmlFor="" className='block mb-2'>Date Analysed:</Label>
+                  <div >
+                    <DatePicker/>
+                  </div>
+                </div>
+                </div>
+               </Card>
+                <Card className='p-3'>
+                <div className="grid grid-cols-2 gap-4">
+                   <div >
+                  <Label htmlFor="" className='block mb-2'>Gross Sale Price:</Label>
+                  <div >
+                    <Input type="text" placeholder="" />
+                  </div>
+                </div>
+                <div >
+                  <Label htmlFor="" className='block mb-2'>Ineff Area:</Label>
+                  <div >
+                    <Input type="text" placeholder="" />
+                  </div>
+                </div>
+                <div >
+                  <Label htmlFor="" className='block mb-2'>Date:</Label>
+                  <div >
+                    <DatePicker/>
+                  </div>
+                </div>
+                  <div >
+                  <Label htmlFor="" className='block mb-2'>Date Analysed:</Label>
+                  <div >
+                    <DatePicker/>
+                  </div>
+                </div>
+                </div>
+               </Card>
             </div>
-
             <Tabs defaultValue="account" className="w-full">
-              <TabsList>
-                <TabsTrigger value="account">Notes</TabsTrigger>
-                <TabsTrigger value="password">Sales Description</TabsTrigger>
-              </TabsList>
-              <TabsContent value="account">
-                <Card className='p-3'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit voluptatum sapiente error sunt aut exercitationem enim similique, est cumque dolore voluptas sed iste autem a et soluta fugiat maxime odit?</Card>
+            <TabsList>
+              <TabsTrigger value="account">Notes</TabsTrigger>
+              <TabsTrigger value="password">Sales Description</TabsTrigger>
+            </TabsList>
+            <TabsContent value="account">
+              <Card className='p-3'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit voluptatum sapiente error sunt aut exercitationem enim similique, est cumque dolore voluptas sed iste autem a et soluta fugiat maxime odit?
+              </Card>
               </TabsContent>
-              <TabsContent value="password">
-                <Card className='p-3'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit voluptatum sapiente error sunt aut exercitationem enim similique, est cumque dolore voluptas sed iste autem a et soluta fugiat maxime odit?</Card>
-              </TabsContent>
-            </Tabs>
+            <TabsContent value="password">
+              <Card className='p-3'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit voluptatum sapiente error sunt aut exercitationem enim similique, est cumque dolore voluptas sed iste autem a et soluta fugiat maxime odit?
+              </Card>
+            </TabsContent>
+          </Tabs>
 
             <div className="grid grid-cols-2 gap-4">
               <Card>
