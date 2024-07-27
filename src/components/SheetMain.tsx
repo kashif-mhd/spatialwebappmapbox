@@ -1,5 +1,6 @@
 
 import { Button } from "./ui/button";
+import { Checkbox } from "./ui/checkbox";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import {
@@ -11,6 +12,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "./ui/sheet";
+import { Textarea } from "./ui/textarea";
 
 const SheetMain = ({ isSheetOpen, setIsSheetOpen }:any) => {
   return (
@@ -18,22 +20,63 @@ const SheetMain = ({ isSheetOpen, setIsSheetOpen }:any) => {
       <SheetContent>
         <SheetHeader>
           <SheetTitle>Add Records</SheetTitle>
-          <SheetDescription>
-            Make changes to your profile here. Click save when you're done.
-          </SheetDescription>
         </SheetHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
+            <Label htmlFor="land" className="text-right">
+              Land Class
             </Label>
-            <Input id="name" value="Pedro Duarte" className="col-span-3" />
+            <Input id="land" value="" className="col-span-3" />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
+            <Label htmlFor="area" className="text-right">
+              Area (HA)
             </Label>
-            <Input id="username" value="@peduarte" className="col-span-3" />
+            <Input id="area" value="" className="col-span-3" />
+          </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="area" className="text-right">
+              Value  (HA)
+            </Label>
+            <Input id="area" value="" className="col-span-3" />
+          </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="area" className="text-right">
+              MS  (HA)
+            </Label>
+            <Input id="area" value="" className="col-span-3" />
+          </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="area" className="text-right">
+              Total MS
+            </Label>
+            <Input id="area" value="" className="col-span-3" />
+          </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="area" className="text-right">
+              5U  (HA)
+            </Label>
+            <Input id="area" value="" className="col-span-3" />
+          </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="area" className="text-right">
+              Total 5I
+            </Label>
+            <Input id="area" value="" className="col-span-3" />
+          </div>
+             <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="area" className="text-right">
+              InOff
+            </Label>
+            <div className="col-span-3">
+              <Checkbox/>
+            </div>
+          </div>
+              <div className="grid  gap-4">
+            <Label htmlFor="area" >
+             Description
+            </Label>
+            <Textarea  />
           </div>
         </div>
         <SheetFooter>
