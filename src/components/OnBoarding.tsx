@@ -7,7 +7,7 @@ const OnBoarding = ({ children }: { children: ReactNode }) => {
 
         <div className='w-full'>
        
-          <div className="px-4 lg:pt-[100px] lg:pb-[40px] py-12 relative z-10 h-full flex flex-col ">
+          <div className="px-4 lg:pt-[100px] lg:pb-[40px] py-12 relative z-10 h-full flex flex-col w-full">
             <div className='flex-1 flex flex-col justify-center max-w-md mx-auto w-full '>
               <div className='flex-1 flex flex-col justify-center items-center py-8'>
                 {children}

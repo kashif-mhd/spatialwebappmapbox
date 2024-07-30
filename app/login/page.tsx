@@ -3,6 +3,11 @@ import { headers } from "next/headers";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { SubmitButton } from "./submit-button";
+import { Label } from "@radix-ui/react-label";
+import { Input } from "@/src/components/ui/input";
+import { Checkbox } from "@/src/components/ui/checkbox";
+import { Button } from "@/src/components/ui/button";
+import OnBoarding from "@/src/components/OnBoarding";
 
 export default function Login({
   searchParams,
@@ -52,7 +57,12 @@ export default function Login({
   };
 
   return (
-    <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2">
+
+
+    <>
+    
+    <OnBoarding>
+    <div className="flex-1 flex flex-col px-8 sm:max-w-md justify-center gap-2 w-full">
       <Link
         href="/"
         className="absolute left-8 top-8 py-2 px-4 rounded-md no-underline text-foreground bg-btn-background hover:bg-btn-background-hover flex items-center group text-sm"
@@ -73,47 +83,57 @@ export default function Login({
         </svg>{" "}
         Back
       </Link>
-
+  <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+          <div className="text-center">
+            <img src="./images/logo.svg" alt="" className='h-12 mb-8 inline-block' />
+            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+              Sign in to your account
+            </h1>
+          </div>
       <form className="flex-1 flex flex-col w-full justify-center gap-2 text-foreground">
-        <label className="text-md" htmlFor="email">
-          Email
-        </label>
-        <input
-          className="rounded-md px-4 py-2 bg-inherit border mb-6"
-          name="email"
-          placeholder="you@example.com"
-          required
-        />
-        <label className="text-md" htmlFor="password">
-          Password
-        </label>
-        <input
-          className="rounded-md px-4 py-2 bg-inherit border mb-6"
-          type="password"
-          name="password"
-          placeholder="••••••••"
-          required
-        />
-        <SubmitButton
-          formAction={signIn}
-          className="bg-green-700 rounded-md px-4 py-2 text-foreground mb-2"
-          pendingText="Signing In..."
-        >
-          Sign In
-        </SubmitButton>
-        <SubmitButton
-          formAction={signUp}
-          className="border border-foreground/20 rounded-md px-4 py-2 text-foreground mb-2"
-          pendingText="Signing Up..."
-        >
-          Sign Up
-        </SubmitButton>
+     
+        
+              <Label htmlFor="email">Email</Label>
+ 
+          <Input type="email"
+                placeholder="Email"
+                value={''}
+                required />
+   
+              <Label htmlFor="password">Password</Label>
+ 
+      <Input type="password"
+                placeholder="Password"
+                value={""}
+                required />
+                  <div className="flex items-center justify-between">
+              <div className="flex items-start">
+                <div className="flex items-center space-x-2">
+                     <label
+                    htmlFor="terms"
+                    className="text-sm flex items-center cursor-pointer gap-2 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                  <Checkbox id="terms" />
+               
+                    Remember me
+                  </label>
+                </div>
+              </div>
+              <Link href="#" className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot password?</Link>
+            </div>
+            <Button type="submit" variant="destructive"  formAction={signIn} className='w-full bg-primary'>Sign in</Button>
+            <p>Don't have an account ? <Link href="/signup" className='font-semibold text-primary' >Sign Up</Link></p>
+     
+    
         {searchParams?.message && (
           <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
             {searchParams.message}
           </p>
         )}
       </form>
+      </div>
     </div>
+    </OnBoarding>
+    </>
   );
 }

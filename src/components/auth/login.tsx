@@ -8,7 +8,8 @@ import { Label } from "../../components/ui/label"
 
 import { Button } from '../../components/ui/button'
 import { Checkbox } from "../../components/ui/checkbox"
-import { Link, useNavigate } from 'react-router-dom';
+import Link from 'next/link';
+import { useNavigate } from 'react-router-dom';
 
 
 const Login: React.FC = () => {
@@ -70,10 +71,10 @@ const Login: React.FC = () => {
                   </label>
                 </div>
               </div>
-              <Link to="#" className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot password?</Link>
+              <Link href="#" className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot password?</Link>
             </div>
             <Button type="submit" variant="destructive" className='w-full bg-primary'>Sign in</Button>
-            <p>Don't have an account ? <Link to="/signup" className='font-semibold text-primary'>Sign Up</Link></p>
+            <p>Don't have an account ? <Link href="/signup" className='font-semibold text-primary'>Sign Up</Link></p>
           </form>
         </div>
       </div>
