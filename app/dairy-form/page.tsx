@@ -2,6 +2,7 @@ import { Combobox } from "@/components/Combobox";
 import Container from "@/components/Container";
 import { DatePicker } from "@/components/DatePicker";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { CstTable } from "@/components/ui/cst-table";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -212,7 +213,8 @@ export default async function DairyForm() {
         </div>
         <div>
           <div className="grid gap-4">
-            <Card className="p-3">
+            
+             <Card className="p-3">
               <div className="grid grid-cols-4 gap-3">
                 <div>
                   <Label htmlFor="" className="block mb-2">
@@ -381,7 +383,7 @@ export default async function DairyForm() {
                     Date:
                   </Label>
                   <div>
-                    <DatePicker />
+                    {/* <DatePicker /> */}
                   </div>
                 </div>
                 <div>
@@ -389,11 +391,11 @@ export default async function DairyForm() {
                     Date Analysed:
                   </Label>
                   <div>
-                    <DatePicker />
+                    {/* <DatePicker /> */}
                   </div>
                 </div>
               </div>
-            </Card>
+            </Card> 
             <div className="grid grid-cols-2 gap-4">
               <Card className="p-3">
                 <div className="grid grid-cols-2 gap-4">
@@ -418,7 +420,7 @@ export default async function DairyForm() {
                       Date:
                     </Label>
                     <div>
-                      <DatePicker />
+                      {/* <DatePicker /> */}
                     </div>
                   </div>
                   <div>
@@ -426,7 +428,7 @@ export default async function DairyForm() {
                       Date Analysed:
                     </Label>
                     <div>
-                      <DatePicker />
+                      {/* <DatePicker /> */}
                     </div>
                   </div>
                 </div>
@@ -454,7 +456,7 @@ export default async function DairyForm() {
                       Date:
                     </Label>
                     <div>
-                      <DatePicker />
+                      {/* <DatePicker /> */}
                     </div>
                   </div>
                   <div>
@@ -462,7 +464,7 @@ export default async function DairyForm() {
                       Date Analysed:
                     </Label>
                     <div>
-                      <DatePicker />
+                      {/* <DatePicker /> */}
                     </div>
                   </div>
                 </div>
