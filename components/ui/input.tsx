@@ -1,4 +1,4 @@
-import { cn } from "@/src/lib/utils"
+import { cn } from "../../utils/tailwindmerge"
 import * as React from "react"
 
 

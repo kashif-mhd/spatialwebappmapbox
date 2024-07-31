@@ -5,7 +5,7 @@ import { format } from "date-fns"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
-import { cn } from "../lib/utils"
+import { cn } from "../utils/tailwindmerge"
 import { Button } from "./ui/button"
 import { Calendar } from "./ui/calendar"
 import {
@@ -63,8 +63,6 @@ export function DatePicker() {
                     mode="single"
                     selected={field.value}
                     onSelect={field.onChange}
-                  
-                    initialFocus
                   />
                 </PopoverContent>
               </Popover>
