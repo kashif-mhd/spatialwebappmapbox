@@ -1,76 +1,63 @@
 'use client'
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { CalendarIcon } from "@radix-ui/react-icons"
-import { format } from "date-fns"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
+import { FC, useState } from 'react'
+import { CalendarIcon } from '@radix-ui/react-icons'
+import { format, isValid } from 'date-fns'
 
-import { cn } from "../utils/tailwindmerge"
-import { Button } from "./ui/button"
-import { Calendar } from "./ui/calendar"
-import {
-  Form,
-  FormControl,
-  FormField,
-} from "./ui/form"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "./ui/popover"
+import { cn } from '../utils/tailwindmerge'
+import { Button } from './ui/button'
+import { Calendar } from './ui/calendar'
+import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 
-const FormSchema = z.object({
-  dob: z.date({
-    required_error: "A date of birth is required.",
-  }),
-})
+export interface DatePickerProps {
+  id?: string
+  className?: string
+  placeholder?: string
+  value?: string
+  onChange?: (value: string | undefined) => void
+  onBlur?: () => void
+}
 
-export function DatePicker() {
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-  })
+export const DatePicker: FC<DatePickerProps> = ({
+  id = '',
+  className,
+  placeholder = 'Select a date',
+  value,
+  onChange,
+  onBlur
+}) => {
+  const [currentValue, setCurrentValue] = useState<Date | undefined>(
+    value && isValid(value) ? new Date(value) : undefined
+  )
 
-
+  const handleChange = (value: Date | undefined) => {
+    setCurrentValue(value)
+    if (typeof onChange === 'function') {
+      const date = value ? format(value, 'yyyy-MM-dd') : undefined
+      onChange(date)
+    }
+  }
 
   return (
-    <Form {...form}>
-        <FormField
-          control={form.control}
-          name="dob"
-          render={({ field }) => (
-            <>           
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "w-full pl-3 text-left font-normal",
-                        !field.value && "text-muted-foreground"
-                      )}
-                    >
-                      {field.value ? (
-                        format(field.value, "PPP")
-                      ) : (
-                        <span>Pick a date</span>
-                      )}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
-                  />
-                </PopoverContent>
-              </Popover>
-            </>
-
-          )}
-        />
-    </Form>
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button
+          id={id}
+          variant={'outline'}
+          className={cn('w-full pl-3 text-left font-normal', !currentValue && 'text-muted-foreground', className)}
+          onClick={() => {
+            if (typeof onBlur === 'function') {
+              onBlur()
+            }
+          }}
+        >
+          {currentValue ? format(currentValue, 'PPP') : <span>{placeholder}</span>}
+          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0" align="start">
+        <Calendar mode="single" selected={currentValue} onSelect={handleChange} />
+      </PopoverContent>
+    </Popover>
   )
 }

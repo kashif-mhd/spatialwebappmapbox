@@ -1,55 +1,55 @@
-import Link from "next/link";
-import { headers } from "next/headers";
-import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
-import { Label } from "@radix-ui/react-label";
-import { Input } from "@/src/components/ui/input";
-import { Checkbox } from "@/src/components/ui/checkbox";
-import { Button } from "@/src/components/ui/button";
-import OnBoarding from "@/src/components/OnBoarding";
+import Link from 'next/link'
+import { headers } from 'next/headers'
+import { createClient } from '@/utils/supabase/server'
+import { redirect } from 'next/navigation'
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Button } from '@/components/ui/button'
+import OnBoarding from '@/components/OnBoarding'
 
 export default function Login({ searchParams }: { searchParams: { message: string } }) {
   const signIn = async (formData: FormData) => {
-    "use server";
+    'use server'
 
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
-    const supabase = createClient();
+    const email = formData.get('email') as string
+    const password = formData.get('password') as string
+    const supabase = createClient()
 
     const { error } = await supabase.auth.signInWithPassword({
       email,
-      password,
-    });
+      password
+    })
 
     if (error) {
-      return redirect("/login?message=Could not authenticate user");
+      return redirect('/login?message=Could not authenticate user')
     }
 
-    return redirect("/protected");
-  };
+    return redirect('/protected')
+  }
 
   const signUp = async (formData: FormData) => {
-    "use server";
+    'use server'
 
-    const origin = headers().get("origin");
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
-    const supabase = createClient();
+    const origin = headers().get('origin')
+    const email = formData.get('email') as string
+    const password = formData.get('password') as string
+    const supabase = createClient()
 
     const { error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        emailRedirectTo: `${origin}/auth/callback`,
-      },
-    });
+        emailRedirectTo: `${origin}/auth/callback`
+      }
+    })
 
     if (error) {
-      return redirect("/login?message=Could not authenticate user");
+      return redirect('/login?message=Could not authenticate user')
     }
 
-    return redirect("/login?message=Check email to continue sign in process");
-  };
+    return redirect('/login?message=Check email to continue sign in process')
+  }
 
   return (
     <OnBoarding>
@@ -71,32 +71,26 @@ export default function Login({ searchParams }: { searchParams: { message: strin
             className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1"
           >
             <polyline points="15 18 9 12 15 6" />
-          </svg>{" "}
+          </svg>{' '}
           Back
         </Link>
         <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
           <div className="text-center">
-            <img src="./images/logo.svg" alt="" className='h-12 mb-8 inline-block' />
+            <img src="./images/logo.svg" alt="" className="h-12 mb-8 inline-block" />
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Sign in to your account
             </h1>
           </div>
-          <form method="post" action={signIn} className="flex-1 flex flex-col w-full justify-center gap-2 text-foreground">
+          <form
+            method="post"
+            action={signIn}
+            className="flex-1 flex flex-col w-full justify-center gap-2 text-foreground"
+          >
             <Label htmlFor="email">Email</Label>
-            <Input
-              name="email"
-              type="email"
-              placeholder="Email"
-              required
-            />
+            <Input name="email" type="email" placeholder="Email" required />
 
             <Label htmlFor="password">Password</Label>
-            <Input
-              name="password"
-              type="password"
-              placeholder="Password"
-              required
-            />
+            <Input name="password" type="password" placeholder="Password" required />
             <div className="flex items-center justify-between">
               <div className="flex items-start">
                 <div className="flex items-center space-x-2">
@@ -109,18 +103,25 @@ export default function Login({ searchParams }: { searchParams: { message: strin
                   </label>
                 </div>
               </div>
-              <Link href="#" className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot password?</Link>
+              <Link href="#" className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">
+                Forgot password?
+              </Link>
             </div>
-            <Button type="submit" variant="destructive" className='w-full bg-primary'>Sign in</Button>
-            <p>Don't have an account? <Link href="/signup" className='font-semibold text-primary'>Sign Up</Link></p>
+            <Button type="submit" variant="destructive" className="w-full bg-primary">
+              Sign in
+            </Button>
+            <p>
+              Don't have an account?
+              <Link href="/signup" className="font-semibold text-primary">
+                Sign Up
+              </Link>
+            </p>
             {searchParams?.message && (
-              <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
-                {searchParams.message}
-              </p>
+              <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">{searchParams.message}</p>
             )}
           </form>
         </div>
       </div>
     </OnBoarding>
-  );
+  )
 }
