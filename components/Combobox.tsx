@@ -9,6 +9,7 @@ import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons'
 
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from './ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
+import { CommandList } from 'cmdk'
 
 export interface ComboboxProps {
   options: { value: string; label: string }[]
@@ -71,6 +72,7 @@ export const Combobox: FC<ComboboxProps> = ({
       </PopoverTrigger>
       <PopoverContent className="w-full p-0">
         <Command>
+          <CommandList>
           <CommandInput placeholder={searchPlaceholder} className="h-9" />
           <CommandEmpty>{noResultsText}</CommandEmpty>
           <CommandGroup>
@@ -90,6 +92,7 @@ export const Combobox: FC<ComboboxProps> = ({
               </CommandItem>
             ))}
           </CommandGroup>
+          </CommandList>
         </Command>
       </PopoverContent>
     </Popover>
