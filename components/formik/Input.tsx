@@ -14,6 +14,7 @@ type Props = {
   groupClassName?: string
   labelClassName?: string
   className?: string
+  handleChange?: (value: any) => void
 } & InputProps
 
 export const Input: FC<Props> = ({
@@ -24,10 +25,13 @@ export const Input: FC<Props> = ({
   groupClassName,
   labelClassName,
   className,
+  handleChange,
   ...restProps
 }) => {
   const id = useId()
   const [field, meta] = useField(name)
+
+  const { onChange, ...restFieldProps } = field
   return (
     <div className={clsx('mb-2', groupClassName)}>
       {label && (
@@ -43,7 +47,11 @@ export const Input: FC<Props> = ({
           className={clsx(className, {
             'border-red-500': meta.touched && meta.error
           })}
-          {...field}
+          onChange={(e) => {
+            onChange(e)
+            if (typeof handleChange === 'function') handleChange(e.target.value)
+          }}
+          {...restFieldProps}
           {...restProps}
         />
 

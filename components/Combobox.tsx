@@ -34,7 +34,6 @@ export const Combobox: FC<ComboboxProps> = ({
   onChange,
   onBlur
 }) => {
-  console.log({ options_combobox: options })
   const [open, setOpen] = useState(false)
   const [currentValue, setCurrentValue] = useState(value)
 
@@ -73,25 +72,25 @@ export const Combobox: FC<ComboboxProps> = ({
       <PopoverContent className="w-full p-0">
         <Command>
           <CommandList>
-          <CommandInput placeholder={searchPlaceholder} className="h-9" />
-          <CommandEmpty>{noResultsText}</CommandEmpty>
-          <CommandGroup>
-            {options?.map((framework) => (
-              <CommandItem
-                key={framework.value}
-                value={framework.value}
-                onSelect={(selectedValue) => {
-                  setCurrentValue(selectedValue === currentValue ? '' : selectedValue)
-                  setOpen(false)
-                }}
-              >
-                {framework.label}
-                <CheckIcon
-                  className={cn('ml-auto h-4 w-4', currentValue === framework.value ? 'opacity-100' : 'opacity-0')}
-                />
-              </CommandItem>
-            ))}
-          </CommandGroup>
+            <CommandInput placeholder={searchPlaceholder} className="h-9" />
+            <CommandEmpty>{noResultsText}</CommandEmpty>
+            <CommandGroup>
+              {options?.map((framework) => (
+                <CommandItem
+                  key={framework.value}
+                  value={framework.value}
+                  onSelect={(selectedValue) => {
+                    setCurrentValue(selectedValue === currentValue ? '' : selectedValue)
+                    setOpen(false)
+                  }}
+                >
+                  {framework.label}
+                  <CheckIcon
+                    className={cn('ml-auto h-4 w-4', currentValue === framework.value ? 'opacity-100' : 'opacity-0')}
+                  />
+                </CommandItem>
+              ))}
+            </CommandGroup>
           </CommandList>
         </Command>
       </PopoverContent>

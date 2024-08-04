@@ -12,6 +12,7 @@ type Props = {
   groupClassName?: string
   labelClassName?: string
   className?: string
+  handleChange?: (value: any) => void
 } & ComboboxProps
 
 export const Select: FC<Props> = ({
@@ -22,9 +23,9 @@ export const Select: FC<Props> = ({
   groupClassName,
   labelClassName,
   className,
+  handleChange,
   ...restProps
 }) => {
-  console.log({ options })
   const id = useId()
   const [field, meta, helpers] = useField(name)
   return (
@@ -42,7 +43,10 @@ export const Select: FC<Props> = ({
           })}
           options={options ?? []}
           value={field.value}
-          onChange={helpers.setValue}
+          onChange={(value) => {
+            helpers.setValue(value)
+            if (typeof handleChange === 'function') handleChange(value)
+          }}
           onBlur={() => helpers.setTouched(true)}
           {...restProps}
         />

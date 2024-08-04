@@ -1,21 +1,22 @@
 'use client'
 
+import { FC, useId } from 'react'
+import { Textarea as UITextarea, TextareaProps } from '../ui/textarea'
+import { Label } from '../ui/label'
 import clsx from 'clsx'
 import { ErrorMessage, useField } from 'formik'
-import { FC, useId } from 'react'
-import { Label } from '../ui/label'
-import { DatePicker as UIDatePicker, DatePickerProps } from '../DatePicker'
 
 type Props = {
   name: string
   label?: string
+  placeholder?: string
   groupClassName?: string
   labelClassName?: string
   className?: string
-  handleChange?: (value: string) => void
-} & DatePickerProps
+  handleChange?: (value: any) => void
+} & TextareaProps
 
-export const DatePicker: FC<Props> = ({
+export const Input: FC<Props> = ({
   name,
   label,
   placeholder,
@@ -26,7 +27,10 @@ export const DatePicker: FC<Props> = ({
   ...restProps
 }) => {
   const id = useId()
-  const [field, meta, helpers] = useField(name)
+  const [field, meta] = useField(name)
+
+  const { onChange, ...restFieldProps } = field
+
   return (
     <div className={clsx('mb-2', groupClassName)}>
       {label && (
@@ -35,17 +39,17 @@ export const DatePicker: FC<Props> = ({
         </Label>
       )}
       <div>
-        <UIDatePicker
+        <UITextarea
           id={id}
+          placeholder={placeholder}
           className={clsx(className, {
             'border-red-500': meta.touched && meta.error
           })}
-          value={field.value}
-          onChange={(value) => {
-            helpers.setValue(value)
-            if (value && typeof handleChange === 'function') handleChange(value)
+          onChange={(e) => {
+            onChange(e)
+            if (typeof handleChange === 'function') handleChange(e.target.value)
           }}
-          onBlur={() => helpers.setTouched(true)}
+          {...restFieldProps}
           {...restProps}
         />
 
