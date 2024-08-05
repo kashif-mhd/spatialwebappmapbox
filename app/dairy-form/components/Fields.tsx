@@ -435,12 +435,42 @@ const Fields: FC<{ formik: FormikProps<FieldsType> }> = ({ formik }) => {
         </TabsContent>
       </Tabs>
 
+      <Card>
+          <CardHeader className="pb-2">
+            <h4 className="font-semibold">Site Value</h4>
+          </CardHeader>
+        <CardContent>
+         
+             <div className="grid grid-cols-3 gap-4">
+                  <Input
+            type="number"
+            name="No"
+            placeholder="No"
+            
+          />    <Input
+            type="number"
+            name="Site Value"
+            placeholder="Site Value"
+            
+          />    <Input
+            type="number"
+            name="Total Value"
+            placeholder="Total Value"
+            
+          />
+            </div>
+        </CardContent>
+      </Card>
+
       <div className="grid grid-cols-2 gap-4">
+        
         <Card>
+          
           <CardHeader className="pb-2">
             <h4 className="font-semibold">Pastoral Land</h4>
           </CardHeader>
           <CardContent className="pt-0">
+         
             <CstTable columns={pastoralColumns} data={pastoralData} />
           </CardContent>
         </Card>
