@@ -42,6 +42,7 @@ export const DatePicker: FC<Props> = ({
           })}
           value={field.value}
           onChange={(value) => {
+            if (value === field.value) return
             helpers.setValue(value)
             if (value && typeof handleChange === 'function') handleChange(value)
           }}

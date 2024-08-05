@@ -46,6 +46,7 @@ export const Input: FC<Props> = ({
             'border-red-500': meta.touched && meta.error
           })}
           onChange={(e) => {
+            if (e.target.value === field.value) return
             onChange(e)
             if (typeof handleChange === 'function') handleChange(e.target.value)
           }}

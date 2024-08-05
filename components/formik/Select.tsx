@@ -44,6 +44,7 @@ export const Select: FC<Props> = ({
           options={options ?? []}
           value={field.value}
           onChange={(value) => {
+            if (value === field.value) return
             helpers.setValue(value)
             if (typeof handleChange === 'function') handleChange(value)
           }}
