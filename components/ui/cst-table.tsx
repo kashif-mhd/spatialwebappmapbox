@@ -34,14 +34,18 @@ import {
   TableRow,
 } from "./table";
 import SheetMain from "../SheetMain";
+import { Pencil, Plus, Trash } from "lucide-react";
 
 type CstTableProps<T> = {
   data: T[];
   columns: ColumnDef<T>[];
+  onEdit?: (row: T) => void;
+  onDelete?: (row: T) => void;
 };
 
-export function CstTable<T>({ data, columns }: CstTableProps<T>) {
+export function CstTable<T>({ data, columns, onEdit, onDelete }: CstTableProps<T>) {
   const [isSheetOpen, setIsSheetOpen] = React.useState(false);
+  const [selectedRowData, setSelectedRowData] = React.useState<T | null>(null);
   const [globalFilter, setGlobalFilter] = React.useState("");
 
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -70,6 +74,40 @@ export function CstTable<T>({ data, columns }: CstTableProps<T>) {
         ),
       },
       ...columns,
+      {
+        id: "actions",
+        header: "Actions",
+        cell: ({ row }) => (
+          <div className="flex space-x-1">
+                <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                setIsSheetOpen(true);
+              }}
+            >
+              <Plus size={16} />
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                onEdit && onEdit(row.original);
+                setSelectedRowData(row.original);
+              }}
+            >
+              <Pencil size={16}/>
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => onDelete && onDelete(row.original)}
+            >
+              <Trash size={16}/>
+            </Button>
+          </div>
+        ),
+      },
     ],
     state: {
       sorting,
@@ -150,7 +188,7 @@ export function CstTable<T>({ data, columns }: CstTableProps<T>) {
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length + 1} className="h-24 text-center">
+                <TableCell colSpan={columns.length + 2} className="h-24 text-center">
                   No results.
                 </TableCell>
               </TableRow>
@@ -172,7 +210,13 @@ export function CstTable<T>({ data, columns }: CstTableProps<T>) {
           </Button>
         </div>
       </div>
-      <SheetMain isSheetOpen={isSheetOpen} setIsSheetOpen={setIsSheetOpen} />
+      {selectedRowData && (
+        <SheetMain
+          isSheetOpen={isSheetOpen}
+          setIsSheetOpen={setIsSheetOpen}
+          data={selectedRowData}
+        />
+      )}
     </div>
   );
 }
