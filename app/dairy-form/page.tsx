@@ -2,8 +2,7 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/utils/supabase/server'
 
 import Container from '@/components/Container'
-
-import DataForm from './components/form'
+import DataForm from './components/DataForm'
 
 export default async function DairyForm() {
   // const supabase = createClient()
