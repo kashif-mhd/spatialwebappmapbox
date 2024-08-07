@@ -47,7 +47,7 @@ export type ImprovementData = {
   description: string
 }
 
-export type InclusiontData = {
+export type InclusionData = {
   id: string
   improvement: string
   unit: number
@@ -112,7 +112,7 @@ export const improvementData: ImprovementData[] = [
   }
 ]
 
-export const inclusionData: InclusiontData[] = [
+export const inclusionData: InclusionData[] = [
   {
     id: '1',
     improvement: 'Fence',
@@ -153,14 +153,15 @@ export const detailChattelsData: DetailChattelsData[] = [
 export const pastoralColumns: ColumnDef<PastoralData>[] = [
   { accessorKey: 'landClass', header: 'Land Class' },
   { accessorKey: 'area', header: 'Area (Ha)' },
-  { accessorKey: 'valuePerHa', header: 'Value (Ha)' },
-  { accessorKey: 'totalValue', header: 'Total Value' },
+  { accessorKey: 'valuePerHa', header: 'Value/Ha' },
+  { accessorKey: 'totalValue', header: 'Value' },
   { accessorKey: 'msPerHa', header: 'MS/Ha' },
   { accessorKey: 'totalMs', header: 'Total MS' },
   { accessorKey: 'suPerHa', header: 'SU/Ha' },
   { accessorKey: 'totalSu', header: 'Total SU' },
   { accessorKey: 'description', header: 'Description' }
 ]
+
 export const improvementColumns: ColumnDef<ImprovementData>[] = [
   { accessorKey: 'improvement', header: 'Improvement' },
   { accessorKey: 'unit', header: 'Unit' },
@@ -170,7 +171,7 @@ export const improvementColumns: ColumnDef<ImprovementData>[] = [
   { accessorKey: 'description', header: 'Description' }
 ]
 
-export const inclusionColumns: ColumnDef<InclusiontData>[] = [
+export const inclusionColumns: ColumnDef<InclusionData>[] = [
   { accessorKey: 'improvement', header: 'Item' },
   { accessorKey: 'unit', header: 'Unit' },
   { accessorKey: 'ratePerUnit', header: 'Rate /Unit' },
@@ -259,7 +260,52 @@ export const formInitialValues = {
   avgeff_ebitda: 0,
   avgeff_cap_rate: 0,
   notes: '',
-  sales_description: ''
+  sales_description: '',
+  pastoral_land: [
+    {
+      id: '1',
+      landClass: 'Class A',
+      area: 100,
+      valuePerHa: 5000,
+      totalValue: 500000,
+      msPerHa: 50,
+      totalMs: 5000,
+      suPerHa: 10,
+      totalSu: 1000,
+      description: 'Description A'
+    }
+  ],
+  improvements: [
+    {
+      id: '1',
+      improvement: 'Fence',
+      unit: 10,
+      ratePerUnit: 100,
+      value: 1000,
+      condition: 'Good',
+      description: 'Wooden fence around property'
+    }
+  ],
+  inclusions_data: [
+    {
+      id: '1',
+      improvement: 'Fence',
+      unit: 10,
+      ratePerUnit: 100,
+      value: 1000,
+      description: 'Wooden fence around property'
+    }
+  ],
+  detail_chattels_data: [
+    {
+      id: '1',
+      item: 'Furniture',
+      unit: 5,
+      ratePerUnit: 200,
+      value: 1000,
+      description: 'Living room furniture'
+    }
+  ]
 }
 
 export type FieldsType = typeof formInitialValues

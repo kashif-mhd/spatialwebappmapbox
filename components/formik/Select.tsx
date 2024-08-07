@@ -6,22 +6,24 @@ import { FC, useId } from 'react'
 import { Label } from '../ui/label'
 import { Combobox, ComboboxProps } from '../Combobox'
 
-type Props = {
+export type FormikSelectProps = {
   name: string
   label?: string
   groupClassName?: string
   labelClassName?: string
+  fieldClassName?: string
   className?: string
   handleChange?: (value: any) => void
 } & ComboboxProps
 
-export const Select: FC<Props> = ({
+export const Select: FC<FormikSelectProps> = ({
   name,
   label,
   options,
   placeholder,
   groupClassName,
   labelClassName,
+  fieldClassName,
   className,
   handleChange,
   ...restProps
@@ -35,10 +37,10 @@ export const Select: FC<Props> = ({
           {label}
         </Label>
       )}
-      <div>
+      <div className={className}>
         <Combobox
           id={id}
-          className={clsx(className, {
+          className={clsx(fieldClassName, {
             'border-red-500': meta.touched && meta.error
           })}
           options={options ?? []}

@@ -6,24 +6,26 @@ import { Label } from '../ui/label'
 import clsx from 'clsx'
 import { ErrorMessage, useField } from 'formik'
 
-type Props = {
+export type FormikInputProps = {
   name: string
   label?: string
   type?: string
   placeholder?: string
   groupClassName?: string
   labelClassName?: string
+  fieldClassName?: string
   className?: string
   handleChange?: (value: any) => void
 } & InputProps
 
-export const Input: FC<Props> = ({
+export const Input: FC<FormikInputProps> = ({
   name,
   label,
   type = 'text',
   placeholder,
   groupClassName,
   labelClassName,
+  fieldClassName,
   className,
   handleChange,
   ...restProps
@@ -39,12 +41,12 @@ export const Input: FC<Props> = ({
           {label}
         </Label>
       )}
-      <div>
+      <div className={className}>
         <UIInput
           id={id}
           type={type}
           placeholder={placeholder}
-          className={clsx(className, {
+          className={clsx(fieldClassName, {
             'border-red-500': meta.touched && meta.error
           })}
           onChange={(e) => {

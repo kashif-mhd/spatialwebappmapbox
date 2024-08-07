@@ -1,25 +1,24 @@
 'use client'
 
+import { FC, useId } from 'react'
+import { Checkbox as UICheckbox } from '../ui/checkbox'
+import { Label } from '../ui/label'
 import clsx from 'clsx'
 import { ErrorMessage, useField } from 'formik'
-import { FC, useId } from 'react'
-import { Label } from '../ui/label'
-import { DatePicker as UIDatePicker, DatePickerProps } from '../DatePicker'
 
-export type FormikDatePickerProps = {
+export type FormikCheckboxProps = {
   name: string
   label?: string
   groupClassName?: string
   labelClassName?: string
   fieldClassName?: string
   className?: string
-  handleChange?: (value: string) => void
-} & DatePickerProps
+  handleChange?: (value: any) => void
+}
 
-export const DatePicker: FC<FormikDatePickerProps> = ({
+export const Checkbox: FC<FormikCheckboxProps> = ({
   name,
   label,
-  placeholder,
   groupClassName,
   labelClassName,
   fieldClassName,
@@ -28,7 +27,9 @@ export const DatePicker: FC<FormikDatePickerProps> = ({
   ...restProps
 }) => {
   const id = useId()
-  const [field, meta, helpers] = useField(name)
+  const [field, meta] = useField(name)
+
+  const { onChange, ...restFieldProps } = field
   return (
     <div className={clsx('mb-2', groupClassName)}>
       {label && (
@@ -37,22 +38,20 @@ export const DatePicker: FC<FormikDatePickerProps> = ({
         </Label>
       )}
       <div className={className}>
-        <UIDatePicker
+        <UICheckbox
           id={id}
           className={clsx(fieldClassName, {
             'border-red-500': meta.touched && meta.error
           })}
-          value={field.value}
-          onChange={(value) => {
-            if (value === field.value) return
-            helpers.setValue(value)
-            if (value && typeof handleChange === 'function') handleChange(value)
+          onChange={(e) => {
+            // onChange(e)
+            console.log({ e })
           }}
-          onBlur={() => helpers.setTouched(true)}
+          {...restFieldProps}
           {...restProps}
         />
 
-        <ErrorMessage name={name} component="div" className="text-red-500" />
+        {label && <ErrorMessage name={name} component="div" className="text-red-500" />}
       </div>
     </div>
   )

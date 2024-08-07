@@ -6,22 +6,24 @@ import { Label } from '../ui/label'
 import clsx from 'clsx'
 import { ErrorMessage, useField } from 'formik'
 
-type Props = {
+export type FormikTextareaProps = {
   name: string
   label?: string
   placeholder?: string
   groupClassName?: string
   labelClassName?: string
+  fieldClassName?: string
   className?: string
   handleChange?: (value: any) => void
 } & TextareaProps
 
-export const Input: FC<Props> = ({
+export const Textarea: FC<FormikTextareaProps> = ({
   name,
   label,
   placeholder,
   groupClassName,
   labelClassName,
+  fieldClassName,
   className,
   handleChange,
   ...restProps
@@ -38,11 +40,11 @@ export const Input: FC<Props> = ({
           {label}
         </Label>
       )}
-      <div>
+      <div className={className}>
         <UITextarea
           id={id}
           placeholder={placeholder}
-          className={clsx(className, {
+          className={clsx(fieldClassName, {
             'border-red-500': meta.touched && meta.error
           })}
           onChange={(e) => {

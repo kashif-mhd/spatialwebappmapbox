@@ -3,24 +3,12 @@
 import { FC, useCallback, useEffect } from 'react'
 import { FormikProps } from 'formik'
 
-import { DatePicker, Input, Select } from '@/components/formik'
+import { DatePicker, Input, Select, Textarea } from '@/components/formik'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { CstTable } from '@/components/ui/cst-table'
-
-import {
-  detailChattelsColumns,
-  detailChattelsData,
-  FieldsType,
-  improvementColumns,
-  improvementData,
-  inclusionColumns,
-  inclusionData,
-  pastoralColumns,
-  pastoralData
-} from './formData'
-import { Textarea } from '@/components/ui/textarea'
+import { FieldsType } from './formData'
 import { Button } from '@/components/ui/button'
+import { DetailChattelsTable, ImprovementsTable, InclusionTable, PastoralLandTable } from './tables'
 
 const Fields: FC<{ formik: FormikProps<FieldsType> }> = ({ formik }) => {
   const setComputedValue = useCallback(
@@ -436,68 +424,26 @@ const Fields: FC<{ formik: FormikProps<FieldsType> }> = ({ formik }) => {
       </Tabs>
 
       <Card>
-          <CardHeader className="pb-2">
-            <h4 className="font-semibold">Site Value</h4>
-          </CardHeader>
+        <CardHeader className="pb-2">
+          <h4 className="font-semibold">Site Value</h4>
+        </CardHeader>
         <CardContent>
-         
-             <div className="grid grid-cols-3 gap-4">
-                  <Input
-            type="number"
-            name="No"
-            placeholder="No"
-            
-          />    <Input
-            type="number"
-            name="Site Value"
-            placeholder="Site Value"
-            
-          />    <Input
-            type="number"
-            name="Total Value"
-            placeholder="Total Value"
-            
-          />
-            </div>
+          <div className="grid grid-cols-3 gap-4">
+            <Input type="number" name="No" placeholder="No" />
+            <Input type="number" name="Site Value" placeholder="Site Value" />
+            <Input type="number" name="Total Value" placeholder="Total Value" />
+          </div>
         </CardContent>
       </Card>
 
       <div className="grid grid-cols-2 gap-4">
-        
-        <Card>
-          
-          <CardHeader className="pb-2">
-            <h4 className="font-semibold">Pastoral Land</h4>
-          </CardHeader>
-          <CardContent className="pt-0">
-         
-            <CstTable columns={pastoralColumns} data={pastoralData} />
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <h4 className="font-semibold">Improvements</h4>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <CstTable data={improvementData} columns={improvementColumns} />
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <h4 className="font-semibold">Inclusion</h4>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <CstTable data={inclusionData} columns={inclusionColumns} />
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <h4 className="font-semibold">Detail Chattels</h4>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <CstTable data={detailChattelsData} columns={detailChattelsColumns} />
-          </CardContent>
-        </Card>
+        <PastoralLandTable />
+
+        <ImprovementsTable />
+
+        <InclusionTable />
+
+        <DetailChattelsTable />
       </div>
     </div>
   )
