@@ -261,51 +261,10 @@ export const formInitialValues = {
   avgeff_cap_rate: 0,
   notes: '',
   sales_description: '',
-  pastoral_land: [
-    {
-      id: '1',
-      landClass: 'Class A',
-      area: 100,
-      valuePerHa: 5000,
-      totalValue: 500000,
-      msPerHa: 50,
-      totalMs: 5000,
-      suPerHa: 10,
-      totalSu: 1000,
-      description: 'Description A'
-    }
-  ],
-  improvements: [
-    {
-      id: '1',
-      improvement: 'Fence',
-      unit: 10,
-      ratePerUnit: 100,
-      value: 1000,
-      condition: 'Good',
-      description: 'Wooden fence around property'
-    }
-  ],
-  inclusions_data: [
-    {
-      id: '1',
-      improvement: 'Fence',
-      unit: 10,
-      ratePerUnit: 100,
-      value: 1000,
-      description: 'Wooden fence around property'
-    }
-  ],
-  detail_chattels_data: [
-    {
-      id: '1',
-      item: 'Furniture',
-      unit: 5,
-      ratePerUnit: 200,
-      value: 1000,
-      description: 'Living room furniture'
-    }
-  ]
+  pastoral_land: [],
+  improvements: [],
+  inclusions_data: [],
+  detail_chattels_data: []
 }
 
 export type FieldsType = typeof formInitialValues

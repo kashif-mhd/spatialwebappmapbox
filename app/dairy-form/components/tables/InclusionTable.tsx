@@ -4,12 +4,13 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { FieldsType, inclusionColumns } from '../formData'
 import { TableFields } from './TableFields'
 import { FormField } from './DrawerForm'
-import { useFormikContext } from 'formik'
+import { FieldArray, useFormikContext } from 'formik'
+import * as yup from 'yup'
 
 const formFields: FormField[] = [
   {
     label: 'Item',
-    name: 'item',
+    name: 'improvement',
     type: 'text',
     groupClassName: 'grid grid-cols-4 items-center gap-4',
     labelClassName: 'text-right',
@@ -47,6 +48,14 @@ const formFields: FormField[] = [
   }
 ]
 
+const inclusionsDataSchema = yup.object().shape({
+  improvement: yup.string().required('Item is required'),
+  unit: yup.number().required('Unit is required'),
+  rate: yup.number().required('Rate is required'),
+  value: yup.number().required('Value is required'),
+  description: yup.string().required('Description is required')
+})
+
 export const InclusionTable = () => {
   const formik = useFormikContext<FieldsType>()
 
@@ -56,7 +65,19 @@ export const InclusionTable = () => {
         <h4 className="font-semibold">Inclusion</h4>
       </CardHeader>
       <CardContent className="pt-0">
-        <TableFields columns={inclusionColumns} data={formik.values.inclusions_data} formFields={formFields} />
+        <FieldArray name="inclusions_data">
+          {(arrayHelpers) => (
+            <TableFields
+              columns={inclusionColumns}
+              data={formik.values.inclusions_data}
+              formFields={formFields}
+              formFieldsValidationSchema={inclusionsDataSchema}
+              onAdd={(row) => arrayHelpers.push(row)}
+              onEdit={(index, row) => arrayHelpers.replace(index, row)}
+              onDelete={(index) => arrayHelpers.remove(index)}
+            />
+          )}
+        </FieldArray>
       </CardContent>
     </Card>
   )

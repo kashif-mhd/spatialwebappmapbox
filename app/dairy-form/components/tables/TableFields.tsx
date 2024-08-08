@@ -30,14 +30,25 @@ type CstTableProps<T> = {
   data: T[]
   columns: ColumnDef<T>[]
   formFields: FormField[]
-  onAdd?: () => void
-  onEdit?: (row: T) => void
-  onDelete?: (row: T) => void
+  formFieldsValidationSchema: any
+
+  onAdd?: (row: T) => void
+  onEdit?: (index: number, row: T) => void
+  onDelete?: (index: number, row: T) => void
 }
 
-export function TableFields<T>({ data, columns, formFields, onEdit, onDelete }: CstTableProps<T>) {
+export function TableFields<T>({
+  data,
+  columns,
+  formFields,
+  formFieldsValidationSchema,
+  onAdd,
+  onEdit,
+  onDelete
+}: CstTableProps<T>) {
   const [isSheetOpen, setIsSheetOpen] = useState(false)
   const [selectedRowData, setSelectedRowData] = useState<T | null>(null)
+  const [selectedRowIndex, setSelectedRowIndex] = useState<number | null>(null)
   const [globalFilter, setGlobalFilter] = useState('')
 
   const [sorting, setSorting] = useState<SortingState>([])
@@ -68,16 +79,23 @@ export function TableFields<T>({ data, columns, formFields, onEdit, onDelete }: 
         cell: ({ row }) => (
           <div className="flex space-x-1">
             <Button
+              type="button"
               variant="outline"
               size="sm"
               onClick={() => {
-                onEdit && onEdit(row.original)
                 setSelectedRowData(row.original)
+                setSelectedRowIndex(row.index)
+                setIsSheetOpen(true)
               }}
             >
               <Pencil size={16} />
             </Button>
-            <Button variant="outline" size="sm" onClick={() => onDelete && onDelete(row.original)}>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => onDelete && onDelete(row.index, row.original)}
+            >
               <Trash size={16} />
             </Button>
           </div>
@@ -115,7 +133,7 @@ export function TableFields<T>({ data, columns, formFields, onEdit, onDelete }: 
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
+            <Button type="button" variant="outline" className="ml-auto">
               Columns <ChevronDownIcon className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
@@ -137,10 +155,13 @@ export function TableFields<T>({ data, columns, formFields, onEdit, onDelete }: 
         </DropdownMenu>
 
         <Button
+          type="button"
           className="ms-1"
           variant="outline"
           size="sm"
           onClick={() => {
+            setSelectedRowData(null)
+            setSelectedRowIndex(null)
             setIsSheetOpen(true)
           }}
         >
@@ -186,6 +207,7 @@ export function TableFields<T>({ data, columns, formFields, onEdit, onDelete }: 
         </div>
         <div className="space-x-2">
           <Button
+            type="button"
             variant="outline"
             size="sm"
             onClick={() => table.previousPage()}
@@ -193,13 +215,38 @@ export function TableFields<T>({ data, columns, formFields, onEdit, onDelete }: 
           >
             Previous
           </Button>
-          <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
             Next
           </Button>
         </div>
       </div>
 
-      <DrawerForm isSheetOpen={isSheetOpen} setIsSheetOpen={setIsSheetOpen} fields={formFields || []} />
+      <DrawerForm
+        isDrawerOpen={isSheetOpen}
+        setIsDrawerOpen={setIsSheetOpen}
+        fields={formFields || []}
+        fieldsInitialValue={
+          selectedRowData ||
+          formFields
+            ?.map((field) => ({ name: field.name, value: field.type === 'number' ? 0 : '' }))
+            ?.reduce((a, v) => ({ ...a, [v.name]: v.value }), {}) ||
+          {}
+        }
+        fieldsValidationSchema={formFieldsValidationSchema}
+        onSubmit={(values: any) => {
+          if (!selectedRowData) {
+            onAdd && onAdd(values)
+          } else if (selectedRowIndex !== null && selectedRowIndex !== undefined) {
+            onEdit && onEdit(selectedRowIndex, values)
+          }
+        }}
+      />
     </div>
   )
 }

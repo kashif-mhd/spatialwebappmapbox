@@ -5,7 +5,8 @@ import { FC } from 'react'
 import { FieldsType, pastoralColumns } from '../formData'
 import { TableFields } from './TableFields'
 import { FormField } from './DrawerForm'
-import { useFormikContext } from 'formik'
+import { FieldArray, useFormikContext } from 'formik'
+import * as yup from 'yup'
 
 const formFields: FormField[] = [
   {
@@ -88,6 +89,19 @@ const formFields: FormField[] = [
   }
 ]
 
+const pastoralLandValidationSchema = yup.object().shape({
+  landClass: yup.string().required().label('Land Class'),
+  area: yup.number().required().label('Area (Ha)'),
+  valuePerHa: yup.number().required().label('Value/Ha'),
+  totalValue: yup.number().required().label('Total Value'),
+  msPerHa: yup.number().required().label('MS/Ha'),
+  totalMs: yup.number().required().label('Total MS'),
+  suPerHa: yup.number().required().label('SU/Ha'),
+  totalSu: yup.number().required().label('Total SU'),
+  inOff: yup.boolean().nullable().label('In Off'),
+  description: yup.string().required().label('Description')
+})
+
 export const PastoralLandTable: FC = () => {
   const formik = useFormikContext<FieldsType>()
   return (
@@ -96,7 +110,19 @@ export const PastoralLandTable: FC = () => {
         <h4 className="font-semibold">Pastoral Land</h4>
       </CardHeader>
       <CardContent className="pt-0">
-        <TableFields columns={pastoralColumns} data={formik.values.pastoral_land} formFields={formFields} />
+        <FieldArray name="pastoral_land">
+          {(arrayHelpers) => (
+            <TableFields
+              columns={pastoralColumns}
+              data={formik.values.pastoral_land}
+              formFields={formFields}
+              formFieldsValidationSchema={pastoralLandValidationSchema}
+              onAdd={(row) => arrayHelpers.push(row)}
+              onEdit={(index, row) => arrayHelpers.replace(index, row)}
+              onDelete={(index) => arrayHelpers.remove(index)}
+            />
+          )}
+        </FieldArray>
       </CardContent>
     </Card>
   )

@@ -4,7 +4,8 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { detailChattelsColumns, FieldsType } from '../formData'
 import { TableFields } from './TableFields'
 import { FormField } from './DrawerForm'
-import { useFormikContext } from 'formik'
+import { FieldArray, useFormikContext } from 'formik'
+import * as yup from 'yup'
 
 const formFields: FormField[] = [
   {
@@ -47,6 +48,14 @@ const formFields: FormField[] = [
   }
 ]
 
+const detailChattelsValidationSchema = yup.object().shape({
+  item: yup.string().required().label('Item'),
+  unit: yup.number().required().label('Unit'),
+  rate: yup.number().required().label('Rate'),
+  value: yup.number().required().label('Value'),
+  description: yup.string().required().label('Description')
+})
+
 export const DetailChattelsTable = () => {
   const formik = useFormikContext<FieldsType>()
 
@@ -56,11 +65,19 @@ export const DetailChattelsTable = () => {
         <h4 className="font-semibold">Detail Chattels</h4>
       </CardHeader>
       <CardContent className="pt-0">
-        <TableFields
-          columns={detailChattelsColumns}
-          data={formik.values.detail_chattels_data}
-          formFields={formFields}
-        />
+        <FieldArray name="detail_chattels_data">
+          {(arrayHelpers) => (
+            <TableFields
+              columns={detailChattelsColumns}
+              data={formik.values.detail_chattels_data}
+              formFields={formFields}
+              formFieldsValidationSchema={detailChattelsValidationSchema}
+              onAdd={(row) => arrayHelpers.push(row)}
+              onEdit={(index, row) => arrayHelpers.replace(index, row)}
+              onDelete={(index) => arrayHelpers.remove(index)}
+            />
+          )}
+        </FieldArray>
       </CardContent>
     </Card>
   )

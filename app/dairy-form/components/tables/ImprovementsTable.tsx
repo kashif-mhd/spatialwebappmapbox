@@ -4,7 +4,8 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { FieldsType, improvementColumns } from '../formData'
 import { TableFields } from './TableFields'
 import { FormField } from './DrawerForm'
-import { useFormikContext } from 'formik'
+import { FieldArray, useFormikContext } from 'formik'
+import * as yup from 'yup'
 
 const formFields: FormField[] = [
   {
@@ -73,6 +74,15 @@ const formFields: FormField[] = [
   }
 ]
 
+const improvementValidationSchema = yup.object().shape({
+  improvement: yup.string().required().label('Improvement'),
+  unit: yup.number().required().label('Unit'),
+  rate: yup.number().required().label('Rate'),
+  value: yup.number().required().label('Value'),
+  condition: yup.string().required().label('Condition'),
+  description: yup.string().required().label('Description')
+})
+
 export const ImprovementsTable = () => {
   const formik = useFormikContext<FieldsType>()
 
@@ -82,7 +92,19 @@ export const ImprovementsTable = () => {
         <h4 className="font-semibold">Improvements</h4>
       </CardHeader>
       <CardContent className="pt-0">
-        <TableFields columns={improvementColumns} data={formik.values.improvements} formFields={formFields} />
+        <FieldArray name="improvements">
+          {(arrayHelpers) => (
+            <TableFields
+              columns={improvementColumns}
+              data={formik.values.improvements}
+              formFields={formFields}
+              formFieldsValidationSchema={improvementValidationSchema}
+              onAdd={(row) => arrayHelpers.push(row)}
+              onEdit={(index, row) => arrayHelpers.replace(index, row)}
+              onDelete={(index) => arrayHelpers.remove(index)}
+            />
+          )}
+        </FieldArray>
       </CardContent>
     </Card>
   )
