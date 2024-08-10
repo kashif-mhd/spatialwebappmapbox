@@ -27,7 +27,7 @@ export const Checkbox: FC<FormikCheckboxProps> = ({
   ...restProps
 }) => {
   const id = useId()
-  const [field, meta] = useField(name)
+  const [field, meta, helpers] = useField(name)
 
   const { onChange, ...restFieldProps } = field
   return (
@@ -43,9 +43,13 @@ export const Checkbox: FC<FormikCheckboxProps> = ({
           className={clsx(fieldClassName, {
             'border-red-500': meta.touched && meta.error
           })}
-          onChange={(e) => {
-            // onChange(e)
-            console.log({ e })
+          onCheckedChange={(value) => {
+            console.log({ value })
+            if (value === field.value) return
+            helpers.setValue(value)
+            if (handleChange) {
+              handleChange(value)
+            }
           }}
           {...restFieldProps}
           {...restProps}

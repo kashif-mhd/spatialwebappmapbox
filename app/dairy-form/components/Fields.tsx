@@ -23,10 +23,12 @@ const Fields: FC<{ formik: FormikProps<FieldsType> }> = ({ formik }) => {
     setComputedValue('eff_area', formik.values.total_area - formik.values.ineff_area)
   }, [setComputedValue, formik.values.total_area, formik.values.ineff_area])
 
-  // useEffect(() => {
-  //   todo: calculate ineff_area
-  //   setComputedValue('ineff_area', )
-  // }, [setComputedValue,]);
+  useEffect(() => {
+    setComputedValue(
+      'ineff_area',
+      formik.values.pastoral_land.reduce((a, b) => (b.inOff ? a + b.area : a), 0)
+    )
+  }, [setComputedValue, formik.values.pastoral_land])
 
   useEffect(() => {
     setComputedValue('gcv_percentage', formik.values.net_sale_price / formik.values.inclusions)
@@ -44,10 +46,12 @@ const Fields: FC<{ formik: FormikProps<FieldsType> }> = ({ formik }) => {
     setComputedValue('gvi_percentage', formik.values.improved_value / formik.values.gvi)
   }, [setComputedValue, formik.values.improved_value, formik.values.gvi])
 
-  // useEffect(() => {
-  //   todo: calculate inclusions
-  //   setComputedValue('inclusions', )
-  // }, [setComputedValue,])
+  useEffect(() => {
+    setComputedValue(
+      'inclusions',
+      formik.values.inclusions_data.reduce((a, b) => a + b.value, 0)
+    )
+  }, [setComputedValue, formik.values.inclusions_data])
 
   useEffect(() => {
     setComputedValue('sp_ha', formik.values.net_sale_price / formik.values.total_area)
@@ -81,54 +85,102 @@ const Fields: FC<{ formik: FormikProps<FieldsType> }> = ({ formik }) => {
     setComputedValue('lv_kgms', formik.values.land_value / formik.values.avg_eff_kgms)
   }, [setComputedValue, formik.values.land_value, formik.values.avg_eff_kgms])
 
-  // useEffect(() => {
-  //   todo: calculate sp_eff_ha
-  //   setComputedValue('sp_eff_ha', )
-  // }, [setComputedValue,])
+  useEffect(() => {
+    let value = 0
+    value += formik.values.pastoral_land.reduce((a, b) => (b.inOff ? a : a + b.totalValue), 0)
+    value += formik.values.improved_value
+    value += formik.values.site_total_value
+    value = value / formik.values.eff_area
+    setComputedValue('sp_eff_ha', value)
+  }, [
+    setComputedValue,
+    formik.values.pastoral_land,
+    formik.values.improved_value,
+    formik.values.site_total_value,
+    formik.values.eff_area
+  ])
 
-  // useEffect(() => {
-  //   todo: calculate sp_eff_su
-  //   setComputedValue('sp_eff_su', )
-  // }, [setComputedValue,])
+  useEffect(() => {
+    let value = 0
+    value += formik.values.pastoral_land.reduce((a, b) => (b.inOff ? a : a + b.totalValue), 0)
+    value += formik.values.improved_value
+    value += formik.values.site_total_value
+    value = value / formik.values.su
+    setComputedValue('sp_eff_su', value)
+  }, [
+    setComputedValue,
+    formik.values.pastoral_land,
+    formik.values.improved_value,
+    formik.values.site_no,
+    formik.values.su
+  ])
 
-  // useEffect(() => {
-  //   todo: calculate sp_eff_kgms
-  //   setComputedValue('sp_eff_kgms', )
-  // }, [setComputedValue,])
+  useEffect(() => {
+    let value = 0
+    value += formik.values.pastoral_land.reduce((a, b) => (b.inOff ? a : a + b.totalValue), 0)
+    value += formik.values.improved_value
+    value += formik.values.site_total_value
+    value = value / formik.values.avg_eff_kgms
+    setComputedValue('sp_eff_kgms', value)
+  }, [
+    setComputedValue,
+    formik.values.pastoral_land,
+    formik.values.improved_value,
+    formik.values.site_total_value,
+    formik.values.avg_eff_kgms
+  ])
 
-  // useEffect(() => {
-  //   todo: calculate lv_eff_ha
-  //   setComputedValue('lv_eff_ha', )
-  // }, [setComputedValue,])
+  useEffect(() => {
+    let value = 0
+    value += formik.values.pastoral_land.reduce((a, b) => (b.inOff ? a : a + b.totalValue), 0)
+    value += formik.values.site_total_value
+    value = value / formik.values.eff_area
+    setComputedValue('lv_eff_ha', value)
+  }, [setComputedValue, formik.values.pastoral_land, formik.values.site_total_value, formik.values.eff_area])
 
-  // useEffect(() => {
-  //   todo: calculate lv_eff_su
-  //   setComputedValue('lv_eff_su', )
-  // }, [setComputedValue,])
+  useEffect(() => {
+    let value = 0
+    value += formik.values.pastoral_land.reduce((a, b) => (b.inOff ? a : a + b.totalValue), 0)
+    value += formik.values.site_total_value
+    value = value / formik.values.su
+    setComputedValue('lv_eff_su', value)
+  }, [setComputedValue])
 
-  // useEffect(() => {
-  //   todo: calculate lv_eff_kgms
-  //   setComputedValue('lv_eff_kgms', )
-  // }, [setComputedValue,])
+  useEffect(() => {
+    let value = 0
+    value += formik.values.pastoral_land.reduce((a, b) => (b.inOff ? a : a + b.totalValue), 0)
+    value += formik.values.site_total_value
+    value = value / formik.values.avg_eff_kgms
+    setComputedValue('lv_eff_kgms', value)
+  }, [setComputedValue, formik.values.pastoral_land, formik.values.site_total_value, formik.values.avg_eff_kgms])
 
   useEffect(() => {
     setComputedValue('kgms_eff_ha', formik.values.avg_eff_kgms / formik.values.eff_area)
   }, [setComputedValue, formik.values.avg_eff_kgms, formik.values.eff_area])
 
-  // useEffect(() => {
-  //   todo: calculate sp_ex_ha
-  //   setComputedValue('sp_ex_ha', )
-  // }, [setComputedValue,])
+  useEffect(() => {
+    let value = 0
+    value += formik.values.pastoral_land.reduce((a, b) => (b.inOff ? a : a + b.totalValue), 0)
+    value += formik.values.improved_value
+    value = value / formik.values.eff_area
+    setComputedValue('sp_ex_ha', value)
+  }, [setComputedValue])
 
-  // useEffect(() => {
-  //   todo: calculate sp_ex_su
-  //   setComputedValue('sp_ex_su', )
-  // }, [setComputedValue,])
+  useEffect(() => {
+    let value = 0
+    value += formik.values.pastoral_land.reduce((a, b) => (b.inOff ? a : a + b.totalValue), 0)
+    value += formik.values.improved_value
+    value = value / formik.values.su
+    setComputedValue('sp_ex_su', value)
+  }, [setComputedValue, formik.values.pastoral_land, formik.values.improved_value, formik.values.su])
 
-  // useEffect(() => {
-  //   todo: calculate sp_ex_kgms
-  //   setComputedValue('sp_ex_kgms', )
-  // }, [setComputedValue,])
+  useEffect(() => {
+    let value = 0
+    value += formik.values.pastoral_land.reduce((a, b) => (b.inOff ? a : a + b.totalValue), 0)
+    value += formik.values.improved_value
+    value = value / formik.values.avg_eff_kgms
+    setComputedValue('sp_ex_kgms', value)
+  }, [setComputedValue, formik.values.pastoral_land, formik.values.improved_value, formik.values.avg_eff_kgms])
 
   useEffect(() => {
     setComputedValue(
@@ -153,25 +205,31 @@ const Fields: FC<{ formik: FormikProps<FieldsType> }> = ({ formik }) => {
     setComputedValue('kgms_su', formik.values.kgms_eff_ha / formik.values.su)
   }, [setComputedValue, formik.values.kgms_eff_ha, formik.values.su])
 
-  // useEffect(() => {
-  //   todo: calculate lv_ex_ha
-  //   formik.setFieldValue('lv_ex_ha', )
-  // }, [setComputedValue,])
+  useEffect(() => {
+    let value = 0
+    value += formik.values.pastoral_land.reduce((a, b) => (b.inOff ? a : a + b.totalValue), 0)
+    value = value / formik.values.eff_area
+    formik.setFieldValue('lv_ex_ha', value)
+  }, [setComputedValue, formik.values.pastoral_land, formik.values.eff_area])
 
-  // useEffect(() => {
-  //   todo: calculate lv_ex_su
-  //   formik.setFieldValue('lv_ex_su', )
-  // }, [setComputedValue,])
+  useEffect(() => {
+    let value = 0
+    value += formik.values.pastoral_land.reduce((a, b) => (b.inOff ? a : a + b.totalValue), 0)
+    value = value / formik.values.su
+    formik.setFieldValue('lv_ex_su', value)
+  }, [setComputedValue, formik.values.pastoral_land, formik.values.su])
 
-  // useEffect(() => {
-  //   todo: calculate lv_ex_kgms
-  //   formik.setFieldValue('lv_ex_kgms', )
-  // }, [setComputedValue,])
+  useEffect(() => {
+    let value = 0
+    value += formik.values.pastoral_land.reduce((a, b) => (b.inOff ? a : a + b.totalValue), 0)
+    value = value / formik.values.avg_eff_kgms
+    formik.setFieldValue('lv_ex_kgms', value)
+  }, [setComputedValue, formik.values.pastoral_land, formik.values.avg_eff_kgms])
 
-  // useEffect(() => {
-  //   todo: calculate improved_value
-  //   formik.setFieldValue('improved_value', )
-  // }, [setComputedValue,])
+  useEffect(() => {
+    let value = formik.values.improvements.reduce((a, b) => a + b.value, 0)
+    formik.setFieldValue('improved_value', value)
+  }, [setComputedValue])
 
   useEffect(() => {
     setComputedValue('avgeff_cap_rate', formik.values.avgeff_ebitda / formik.values.net_sale_price)
@@ -429,9 +487,9 @@ const Fields: FC<{ formik: FormikProps<FieldsType> }> = ({ formik }) => {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-3 gap-4">
-            <Input type="number" name="No" placeholder="No" />
-            <Input type="number" name="Site Value" placeholder="Site Value" />
-            <Input type="number" name="Total Value" placeholder="Total Value" />
+            <Input type="number" name="site_no" placeholder="No" />
+            <Input type="number" name="site_value" placeholder="Site Value" />
+            <Input type="number" name="site_total_value" placeholder="Total Value" />
           </div>
         </CardContent>
       </Card>

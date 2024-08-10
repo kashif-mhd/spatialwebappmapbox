@@ -26,6 +26,7 @@ export const frameworks = [
 
 export type PastoralData = {
   id: string
+  inOff: boolean
   landClass: string
   area: number
   valuePerHa: number
@@ -64,94 +65,9 @@ export type DetailChattelsData = {
   description: string
 }
 
-export const pastoralData: PastoralData[] = [
-  {
-    id: '1',
-    landClass: 'Class A',
-    area: 100,
-    valuePerHa: 5000,
-    totalValue: 500000,
-    msPerHa: 50,
-    totalMs: 5000,
-    suPerHa: 10,
-    totalSu: 1000,
-    description: 'Description A'
-  },
-  {
-    id: '2',
-    landClass: 'Class B',
-    area: 200,
-    valuePerHa: 6000,
-    totalValue: 1200000,
-    msPerHa: 60,
-    totalMs: 12000,
-    suPerHa: 20,
-    totalSu: 4000,
-    description: 'Description B'
-  }
-]
-
-export const improvementData: ImprovementData[] = [
-  {
-    id: '1',
-    improvement: 'Fence',
-    unit: 10,
-    ratePerUnit: 100,
-    value: 1000,
-    condition: 'Good',
-    description: 'Wooden fence around property'
-  },
-  {
-    id: '2',
-    improvement: 'Barn',
-    unit: 1,
-    ratePerUnit: 5000,
-    value: 5000,
-    condition: 'Excellent',
-    description: 'Large barn for storage'
-  }
-]
-
-export const inclusionData: InclusionData[] = [
-  {
-    id: '1',
-    improvement: 'Fence',
-    unit: 10,
-    ratePerUnit: 100,
-    value: 1000,
-    description: 'Wooden fence around property'
-  },
-  {
-    id: '2',
-    improvement: 'Barn',
-    unit: 1,
-    ratePerUnit: 5000,
-    value: 5000,
-    description: 'Large barn for storage'
-  }
-]
-
-export const detailChattelsData: DetailChattelsData[] = [
-  {
-    id: '1',
-    item: 'Furniture',
-    unit: 5,
-    ratePerUnit: 200,
-    value: 1000,
-    description: 'Living room furniture'
-  },
-  {
-    id: '2',
-    item: 'Appliances',
-    unit: 3,
-    ratePerUnit: 500,
-    value: 1500,
-    description: 'Kitchen appliances'
-  }
-]
-
 export const pastoralColumns: ColumnDef<PastoralData>[] = [
   { accessorKey: 'landClass', header: 'Land Class' },
+  { accessorKey: 'inOff', header: 'In Off' },
   { accessorKey: 'area', header: 'Area (Ha)' },
   { accessorKey: 'valuePerHa', header: 'Value/Ha' },
   { accessorKey: 'totalValue', header: 'Value' },
@@ -261,13 +177,131 @@ export const formInitialValues = {
   avgeff_cap_rate: 0,
   notes: '',
   sales_description: '',
-  pastoral_land: [],
-  improvements: [],
-  inclusions_data: [],
+  site_no: 0,
+  site_value: 0,
+  site_total_value: 0,
+  pastoral_land: [
+    {
+      id: '1',
+      landClass: 'Class A',
+      area: 100,
+      valuePerHa: 5000,
+      totalValue: 500000,
+      msPerHa: 50,
+      totalMs: 5000,
+      suPerHa: 10,
+      totalSu: 1000,
+      description: 'Description A',
+      inOff: false
+    }
+  ],
+  improvements: [
+    {
+      id: '1',
+      improvement: 'Fence',
+      unit: 10,
+      ratePerUnit: 100,
+      value: 1000,
+      condition: 'Good',
+      description: 'Wooden fence around property'
+    }
+  ],
+  inclusions_data: [
+    {
+      id: '1',
+      improvement: 'Fence',
+      unit: 10,
+      ratePerUnit: 100,
+      value: 1000,
+      description: 'Wooden fence around property'
+    }
+  ],
   detail_chattels_data: []
 }
 
-export type FieldsType = typeof formInitialValues
+export type FieldsType = {
+  vendor: string
+  street_no: string
+  address: string
+  locality: string
+  property_name: string
+  district: string
+  region: string
+  distance: number
+  sale_date: string
+  rt: string
+  legal_des: string
+  use: string
+  relationship: string
+  total_area: number
+  roll: string
+  gcv: number
+  gcv_percentage: number
+  analysed_by: string
+  tenure: string
+  eff_area: number
+  assess: string
+  glv: number
+  glv_percentage: number
+  analyses_status: string
+  gross_sale_price: number
+  ineff_area: number
+  gv_date: string
+  gvi: number
+  gvi_percentage: number
+  date_analysed: string
+  inclusions: number
+  su: number
+  sp_ha: number
+  sp_su: number
+  sp_kgms: number
+  ps_flag: number
+  net_sale_price: number
+  su_eff_ha: number
+  lv_ha: number
+  lv_su: number
+  lv_kgms: number
+  sc_flag: string
+  dwelling_chattels: number
+  actual_kgms: number
+  sp_eff_ha: number
+  sp_eff_su: number
+  sp_eff_kgms: number
+  cw_flag: string
+  cw_number: string
+  farm_chattels: number
+  avg_eff_kgms: number
+  lv_eff_ha: number
+  lv_eff_su: number
+  lv_eff_kgms: number
+  rainfall: number
+  detailed_chattels: number
+  kgms_eff_ha: number
+  sp_ex_ha: number
+  sp_ex_su: number
+  sp_ex_kgms: number
+  altitude: number
+  land_value: number
+  kgms_su: number
+  lv_ex_ha: number
+  lv_ex_su: number
+  lv_ex_kgms: number
+  n_limit: number
+  improved_value: number
+  actual_ebitda: number
+  actual_cap_rate: number
+  avgeff_ebitda: number
+  avgeff_cap_rate: number
+  notes: string
+  sales_description: string
+  site_no: number
+  site_value: number
+  site_total_value: number
+  pastoral_land: PastoralData[]
+  improvements: ImprovementData[]
+  inclusions_data: InclusionData[]
+  detail_chattels_data: DetailChattelsData[]
+}
 
 export const formSchema = yup.object().shape({
   vendor: yup.string().required().label('Vender/Purchaser'),
