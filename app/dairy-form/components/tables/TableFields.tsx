@@ -23,7 +23,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import DrawerForm, { FormField } from './DrawerForm'
 
 type CstTableProps<T> = {
@@ -31,6 +31,7 @@ type CstTableProps<T> = {
   columns: ColumnDef<T>[]
   formFields: FormField[]
   formFieldsValidationSchema: any
+  footerData?: T // Add footerData prop to pass custom footer data
 
   onAdd?: (row: T) => void
   onEdit?: (index: number, row: T) => void
@@ -42,6 +43,7 @@ export function TableFields<T>({
   columns,
   formFields,
   formFieldsValidationSchema,
+  footerData, // Destructure footerData here
   onAdd,
   onEdit,
   onDelete
@@ -198,6 +200,18 @@ export function TableFields<T>({
               </TableRow>
             )}
           </TableBody>
+          {/* Add the TableFooter section */}
+          {footerData && (
+            <TableFooter>
+              <TableRow className="font-semibold bg-gray-100">
+                {table.getAllColumns().map((column) => (
+                  <TableCell key={column.id}>
+                    {footerData[column.id as keyof T] || ''} {/* Display the corresponding footer data */}
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableFooter>
+          )}
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
