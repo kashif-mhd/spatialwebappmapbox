@@ -5,8 +5,14 @@ import { Form, Formik, FormikHelpers, FormikValues } from 'formik'
 
 import Fields from './Fields'
 import { FieldsType, formInitialValues, formSchema } from './formData'
+import { LocalityData } from '../page'
 
-const DataForm: FC = () => {
+export type DataFormProps = {
+  localityData: LocalityData[]
+}
+
+const DataForm: React.FC<DataFormProps> = ({localityData}: DataFormProps) => {
+
   const handleSubmit = (values: FieldsType, actions: FormikHelpers<FieldsType>) => {
     console.log(values, actions)
   }
@@ -15,7 +21,7 @@ const DataForm: FC = () => {
     <Formik initialValues={formInitialValues} validationSchema={formSchema} onSubmit={handleSubmit}>
       {(formik) => (
         <Form>
-          <Fields formik={formik} />
+          <Fields formik={formik} localityData={localityData} />
         </Form>
       )}
     </Formik>

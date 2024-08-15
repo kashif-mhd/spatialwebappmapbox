@@ -1,6 +1,6 @@
 'use client'
 
-import { FC, useCallback, useEffect } from 'react'
+import { FC, useCallback, useEffect, useMemo } from 'react'
 import { FormikProps } from 'formik'
 
 import { DatePicker, Input, Select, Textarea } from '@/components/formik'
@@ -9,8 +9,39 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { FieldsType } from './formData'
 import { Button } from '@/components/ui/button'
 import { DetailChattelsTable, ImprovementsTable, InclusionTable, PastoralLandTable } from './tables'
+import { LocalityData } from '../page'
 
-const Fields: FC<{ formik: FormikProps<FieldsType> }> = ({ formik }) => {
+type FieldsProps = {
+  formik: FormikProps<FieldsType>
+  localityData: LocalityData[]
+}
+
+const Fields: React.FC<FieldsProps> = ({ formik, localityData }) => {
+
+  const localityArray = useMemo(() => {
+    const uniqueLocalities = new Map();
+    localityData.forEach(item => {
+      uniqueLocalities.set(item.locality, { label: item.locality, value: item.locality });
+    });
+    return Array.from(uniqueLocalities.values());
+  }, [localityData]);
+
+  const districtArray = useMemo(() => {
+    const uniqueLocalities = new Map();
+    localityData.forEach(item => {
+      uniqueLocalities.set(item.district, { label: item.district, value: item.district });
+    });
+    return Array.from(uniqueLocalities.values());
+  }, [localityData]);
+
+  const regionArray = useMemo(() => {
+    const uniqueLocalities = new Map();
+    localityData.forEach(item => {
+      uniqueLocalities.set(item.region, { label: item.region, value: item.region });
+    });
+    return Array.from(uniqueLocalities.values());
+  }, [localityData]);
+  
   const setComputedValue = useCallback(
     (fieldName: keyof FieldsType, value: number) => {
       if (Number.isNaN(value)) return
@@ -249,13 +280,13 @@ const Fields: FC<{ formik: FormikProps<FieldsType> }> = ({ formik }) => {
 
           <Input type="text" name="address" label="Address" placeholder="Enter Address" />
 
-          <Select name="locality" label="Locality" options={[]} />
+          <Select name="locality" label="Locality" options={localityArray} />
 
           <Input type="text" name="property_name" label="Property Name" placeholder="Enter Property Name" />
 
-          <Select name="district" label="District" options={[]} />
+          <Select name="district" label="District" options={districtArray} />
 
-          <Select name="region" label="Region" options={[]} />
+          <Select name="region" label="Region" options={regionArray} />
 
           <Input type="text" name="distance" label="Distance" placeholder="Enter Distance" />
 
