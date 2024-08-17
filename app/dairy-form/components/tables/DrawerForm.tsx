@@ -75,7 +75,7 @@ const DrawerForm: FC<Props> = ({
             <SheetHeader>
               <SheetTitle>Add Records</SheetTitle>
             </SheetHeader>
-            <div className="grid gap-4 py-4">
+            <div className="grid gap-4 py-4 customLabel">
               {fields.map((field, index) => {
                 switch (field.type) {
                   case 'text':

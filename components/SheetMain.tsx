@@ -21,51 +21,51 @@ const SheetMain = ({ isSheetOpen, setIsSheetOpen }:any) => {
         <SheetHeader>
           <SheetTitle>Add Records</SheetTitle>
         </SheetHeader>
-        <div className="grid gap-4 py-4">
+        <div className="grid gap-4 py-4 ">
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="land" className="text-right">
+            <Label htmlFor="land" className="text-right dark:text-black text-black">
               Land Class
             </Label>
             <Input id="land" value="" className="col-span-3" />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="area" className="text-right">
+            <Label htmlFor="area" className="text-right dark:text-black text-black">
               Area (HA)
             </Label>
             <Input id="area" value="" className="col-span-3" />
           </div>
               <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="area" className="text-right">
+            <Label htmlFor="area" className="text-right dark:text-black text-black">
               Value  (HA)
             </Label>
             <Input id="area" value="" className="col-span-3" />
           </div>
             <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="area" className="text-right">
+            <Label htmlFor="area" className="text-right dark:text-black text-black">
               MS  (HA)
             </Label>
             <Input id="area" value="" className="col-span-3" />
           </div>
             <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="area" className="text-right">
+            <Label htmlFor="area" className="text-right dark:text-black text-black">
               Total MS
             </Label>
             <Input id="area" value="" className="col-span-3" />
           </div>
             <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="area" className="text-right">
+            <Label htmlFor="area" className="text-right dark:text-black text-black">
               5U  (HA)
             </Label>
             <Input id="area" value="" className="col-span-3" />
           </div>
             <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="area" className="text-right">
+            <Label htmlFor="area" className="text-right dark:text-black text-black">
               Total 5I
             </Label>
             <Input id="area" value="" className="col-span-3" />
           </div>
              <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="area" className="text-right">
+            <Label htmlFor="area" className="text-right dark:text-black text-black">
               InOff
             </Label>
             <div className="col-span-3">
@@ -73,7 +73,7 @@ const SheetMain = ({ isSheetOpen, setIsSheetOpen }:any) => {
             </div>
           </div>
               <div className="grid  gap-4">
-            <Label htmlFor="area" >
+            <Label htmlFor="area" className="dark:text-black text-black" >
              Description
             </Label>
             <Textarea  />
