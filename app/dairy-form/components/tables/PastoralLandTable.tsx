@@ -149,42 +149,44 @@ export const PastoralLandTable: FC = () => {
               bulkAction={{
                 label: 'Calculate',
                 onClick: (rows) => {
-                  const index = rows[0].index
+                  for (const row of rows) {
+                    const index = row.index
 
-                  const area =
-                    formik.values.total_area -
-                    formik.values.pastoral_land
-                      .filter((value, index) => index !== index)
-                      .reduce((acc, row) => acc + row.area, 0)
-                  const valuePerHa = formik.values.pastoral_land[index].totalValue / area
-                  const totalValue =
-                    formik.values.land_value -
-                    formik.values.site_total_value -
-                    formik.values.pastoral_land
-                      .filter((value, index) => index !== index)
-                      .reduce((acc, row) => acc + row.totalValue, 0)
+                    const area =
+                      formik.values.total_area -
+                      formik.values.pastoral_land
+                        .filter((value, index) => index !== index)
+                        .reduce((acc, row) => acc + row.area, 0)
+                    const valuePerHa = formik.values.pastoral_land[index].totalValue / area
+                    const totalValue =
+                      formik.values.land_value -
+                      formik.values.site_total_value -
+                      formik.values.pastoral_land
+                        .filter((value, index) => index !== index)
+                        .reduce((acc, row) => acc + row.totalValue, 0)
 
-                  const totalMs =
-                    formik.values.avg_eff_kgms -
-                    formik.values.pastoral_land
-                      .filter((value, index) => index !== index)
-                      .reduce((acc, row) => acc + row.totalMs, 0)
-                  const msPerHa = totalMs / valuePerHa
+                    const totalMs =
+                      formik.values.avg_eff_kgms -
+                      formik.values.pastoral_land
+                        .filter((value, index) => index !== index)
+                        .reduce((acc, row) => acc + row.totalMs, 0)
+                    const msPerHa = totalMs / valuePerHa
 
-                  const totalSu =
-                    formik.values.su -
-                    formik.values.pastoral_land
-                      .filter((value, index) => index !== index)
-                      .reduce((acc, row) => acc + row.totalSu, 0)
-                  const suPerHa = totalSu / valuePerHa
+                    const totalSu =
+                      formik.values.su -
+                      formik.values.pastoral_land
+                        .filter((value, index) => index !== index)
+                        .reduce((acc, row) => acc + row.totalSu, 0)
+                    const suPerHa = totalSu / valuePerHa
 
-                  formik.setFieldValue(`pastoral_land[${index}].area`, area)
-                  formik.setFieldValue(`pastoral_land[${index}].valuePerHa`, valuePerHa)
-                  formik.setFieldValue(`pastoral_land[${index}].totalValue`, totalValue)
-                  formik.setFieldValue(`pastoral_land[${index}].msPerHa`, msPerHa)
-                  formik.setFieldValue(`pastoral_land[${index}].totalMs`, totalMs)
-                  formik.setFieldValue(`pastoral_land[${index}].suPerHa`, suPerHa)
-                  formik.setFieldValue(`pastoral_land[${index}].totalSu`, totalSu)
+                    formik.setFieldValue(`pastoral_land[${index}].area`, area)
+                    formik.setFieldValue(`pastoral_land[${index}].valuePerHa`, valuePerHa)
+                    formik.setFieldValue(`pastoral_land[${index}].totalValue`, totalValue)
+                    formik.setFieldValue(`pastoral_land[${index}].msPerHa`, msPerHa)
+                    formik.setFieldValue(`pastoral_land[${index}].totalMs`, totalMs)
+                    formik.setFieldValue(`pastoral_land[${index}].suPerHa`, suPerHa)
+                    formik.setFieldValue(`pastoral_land[${index}].totalSu`, totalSu)
+                  }
                 }
               }}
             />
