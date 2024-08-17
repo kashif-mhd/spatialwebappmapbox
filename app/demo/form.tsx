@@ -1,6 +1,7 @@
 'use client'
 
-import { DatePicker, Textarea, Select } from '@/components/formik'
+import { Combobox } from '@/components/Combobox'
+import { DatePicker, Input, Select } from '@/components/formik'
 import { Button } from '@/components/ui/button'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
@@ -29,11 +30,11 @@ export default function FormPage() {
     <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
       {() => (
         <Form>
-          <Textarea name="name" label="Name" type="text" placeholder="Name" groupClassName="mb-2" />
+          <Input name="name" label="Name" type="text" placeholder="Name" groupClassName="mb-2" />
 
-          <Textarea name="email" label="Email" type="email" placeholder="Email" groupClassName="mb-2" />
+          <Input name="email" label="Email" type="email" placeholder="Email" groupClassName="mb-2" />
 
-          <Textarea name="password" label="Password" type="password" placeholder="Password" groupClassName="mb-2" />
+          <Input name="password" label="Password" type="password" placeholder="Password" groupClassName="mb-2" />
 
           <Select
             name="gender"
@@ -44,6 +45,13 @@ export default function FormPage() {
               { label: 'Female', value: 'female' }
             ]}
             groupClassName="mb-2"
+          />
+
+          <Combobox
+            options={[
+              { label: 'Male', value: 'male' },
+              { label: 'Female', value: 'female' }
+            ]}
           />
 
           <DatePicker name="dob" label="Date of Birth" placeholder="Date of Birth" groupClassName="mb-2" />

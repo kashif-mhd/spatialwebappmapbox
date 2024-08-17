@@ -6,6 +6,7 @@ import { TableFields } from './TableFields'
 import { FormField } from './DrawerForm'
 import { FieldArray, useFormikContext } from 'formik'
 import * as yup from 'yup'
+import { useMemo } from 'react'
 
 const formFields: FormField[] = [
   {
@@ -38,7 +39,8 @@ const formFields: FormField[] = [
     type: 'number',
     groupClassName: 'grid grid-cols-4 items-center gap-4',
     labelClassName: 'text-right',
-    className: 'col-span-3'
+    className: 'col-span-3',
+    readOnly: true
   },
   {
     label: 'Description',
@@ -58,6 +60,17 @@ const detailChattelsValidationSchema = yup.object().shape({
 
 export const DetailChattelsTable = () => {
   const formik = useFormikContext<FieldsType>()
+  const footerData = useMemo(() => {
+    const data = formik.values.detail_chattels_data || []
+    return {
+      id: '',
+      item: 'Total',
+      unit: 0,
+      ratePerUnit: 0,
+      value: data.reduce((acc, row) => acc + row.value, 0),
+      description: ''
+    }
+  }, [formik.values.detail_chattels_data])
 
   return (
     <Card>
@@ -72,8 +85,17 @@ export const DetailChattelsTable = () => {
               data={formik.values.detail_chattels_data}
               formFields={formFields}
               formFieldsValidationSchema={detailChattelsValidationSchema}
-              onAdd={(row) => arrayHelpers.push(row)}
-              onEdit={(index, row) => arrayHelpers.replace(index, row)}
+              footerData={footerData}
+              onAdd={(row) => {
+                const calculatedRow = { ...row }
+                calculatedRow.value = row.unit * row.ratePerUnit
+                arrayHelpers.push(row)
+              }}
+              onEdit={(index, row) => {
+                const calculatedRow = { ...row }
+                calculatedRow.value = row.unit * row.ratePerUnit
+                arrayHelpers.replace(index, row)
+              }}
               onDelete={(index) => arrayHelpers.remove(index)}
             />
           )}

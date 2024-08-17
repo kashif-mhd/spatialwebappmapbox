@@ -5,6 +5,7 @@ import { ChevronDownIcon } from '@radix-ui/react-icons'
 import {
   ColumnDef,
   ColumnFiltersState,
+  Row,
   SortingState,
   VisibilityState,
   flexRender,
@@ -36,6 +37,8 @@ type CstTableProps<T> = {
   onAdd?: (row: T) => void
   onEdit?: (index: number, row: T) => void
   onDelete?: (index: number, row: T) => void
+
+  bulkAction?: { label: string; onClick: (rows: Row<T>[]) => void }
 }
 
 export function TableFields<T>({
@@ -46,7 +49,8 @@ export function TableFields<T>({
   footerData, // Destructure footerData here
   onAdd,
   onEdit,
-  onDelete
+  onDelete,
+  bulkAction
 }: CstTableProps<T>) {
   const [isSheetOpen, setIsSheetOpen] = useState(false)
   const [selectedRowData, setSelectedRowData] = useState<T | null>(null)
@@ -125,6 +129,21 @@ export function TableFields<T>({
 
   return (
     <div className="w-full">
+      {bulkAction && (
+        <div className="flex align-end">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="ml-auto"
+            onClick={() => {
+              bulkAction.onClick(table.getSelectedRowModel().rows)
+            }}
+          >
+            {bulkAction.label}
+          </Button>
+        </div>
+      )}
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter..."
@@ -201,7 +220,7 @@ export function TableFields<T>({
             )}
           </TableBody>
           {/* Add the TableFooter section */}
-          {footerData && (
+          {footerData && table.getRowModel().rows?.length > 0 && (
             <TableFooter>
               <TableRow className="font-semibold bg-gray-100">
                 {table.getAllColumns().map((column) => (

@@ -11,14 +11,13 @@ export type DataFormProps = {
   localityData: LocalityData[]
 }
 
-const DataForm: React.FC<DataFormProps> = ({localityData}: DataFormProps) => {
-
+const DataForm: FC<DataFormProps> = ({ localityData }: DataFormProps) => {
   const handleSubmit = (values: FieldsType, actions: FormikHelpers<FieldsType>) => {
     console.log(values, actions)
   }
 
   return (
-    <Formik initialValues={formInitialValues} validationSchema={formSchema} onSubmit={handleSubmit}>
+    <Formik<FieldsType> initialValues={formInitialValues} validationSchema={formSchema} onSubmit={handleSubmit}>
       {(formik) => (
         <Form>
           <Fields formik={formik} localityData={localityData} />

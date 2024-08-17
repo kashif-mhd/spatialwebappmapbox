@@ -44,7 +44,6 @@ export const Checkbox: FC<FormikCheckboxProps> = ({
             'border-red-500': meta.touched && meta.error
           })}
           onCheckedChange={(value) => {
-            console.log({ value })
             if (value === field.value) return
             helpers.setValue(value)
             if (handleChange) {
