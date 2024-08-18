@@ -6,7 +6,7 @@ import { cn } from "../../utils/tailwindmerge";
 
 
 const labelVariants = cva(
-  "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+  "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 dark:text-black"
 )
 
 const Label = React.forwardRef<
