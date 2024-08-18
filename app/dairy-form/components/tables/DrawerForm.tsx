@@ -71,11 +71,11 @@ const DrawerForm: FC<Props> = ({
         enableReinitialize
       >
         {(formik) => (
-          <SheetContent>
+          <SheetContent className="customLabel">
             <SheetHeader>
               <SheetTitle>Add Records</SheetTitle>
             </SheetHeader>
-            <div className="grid gap-4 py-4 customLabel">
+            <div className="grid gap-4 py-4">
               {fields.map((field, index) => {
                 switch (field.type) {
                   case 'text':

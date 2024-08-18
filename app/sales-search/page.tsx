@@ -10,7 +10,7 @@ export default async function SalesSearch() {
     <Container>
       <div className="px-6">
         <div className="py-3">
-          <span className="font-semibold text-xl">Sales Search</span>
+          <span className="font-semibold text-xl dark:text-black">Sales Search</span>
         </div>
         <div className="pb-3">
           <SearchMain/>

@@ -17,7 +17,7 @@ import { Textarea } from "./ui/textarea";
 const SheetMain = ({ isSheetOpen, setIsSheetOpen }:any) => {
   return (
     <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-      <SheetContent>
+      <SheetContent className="customLabel">
         <SheetHeader>
           <SheetTitle>Add Records</SheetTitle>
         </SheetHeader>

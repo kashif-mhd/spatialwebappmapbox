@@ -21,7 +21,7 @@ export default async function Dashboard() {
     <Container>
       <div className='px-6'>
         <div className='py-3'>
-          <span className='font-semibold text-xl'>Dashboard</span>
+          <span className='font-semibold text-xl dark:text-black'>Dashboard</span>
         </div>
         <div>
           <Card className="w-[350px]">

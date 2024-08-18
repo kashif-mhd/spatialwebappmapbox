@@ -8,7 +8,7 @@ const page = () => {
        <Container>
       <div className="px-6">
         <div className="py-3">
-          <span className="font-semibold text-xl">Form List</span>
+          <span className="font-semibold text-xl dark:text-black">Form List</span>
         </div>
         <Card className="p-3">
           <FormListTable/>

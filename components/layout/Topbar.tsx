@@ -39,7 +39,7 @@ export default async function Topbar() {
         </Button>
       </div>
       <DropdownMenu>
-        <DropdownMenuTrigger className="inline-flex items-center gap-4 text-sm">
+        <DropdownMenuTrigger className="inline-flex items-center gap-4 text-sm dark:text-black">
           <Avatar>
             <AvatarImage src="https://github.com/shadcn.png" />
             <AvatarFallback>AA</AvatarFallback>
