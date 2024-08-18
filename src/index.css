@@ -68,3 +68,7 @@
     @apply bg-background text-foreground;
   }
 }
+
+.customLabel label {
+  @apply dark:text-black
+}
