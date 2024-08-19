@@ -15,6 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "../../components/ui/dropdown-menu";
 import { Button } from "../ui/button";
+import AuthButton from "../AuthButton";
 
 export default async function Topbar() {
   const supabase = createClient();
@@ -24,8 +25,6 @@ export default async function Topbar() {
   } = await supabase.auth.getUser();
 
   const handleSignOut = async () => {
-    "use server";
-
     const supabase = createClient();
     await supabase.auth.signOut();
     return redirect("/login");
@@ -49,7 +48,7 @@ export default async function Topbar() {
         <DropdownMenuContent>
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={handleSignOut}>Logout</DropdownMenuItem>
+          <DropdownMenuItem><AuthButton /></DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
