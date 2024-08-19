@@ -1,7 +1,23 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { ChevronDownIcon } from '@radix-ui/react-icons'
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { ChevronDownIcon } from "@radix-ui/react-icons";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -13,33 +29,25 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  useReactTable
-} from '@tanstack/react-table'
-import { Pencil, Plus, Trash } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
-import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import DrawerForm, { FormField } from './DrawerForm'
+  useReactTable,
+} from "@tanstack/react-table";
+import { Pencil, Plus, Trash } from "lucide-react";
+import { useState } from "react";
+import DrawerForm, { FormField } from "./DrawerForm";
 
 type CstTableProps<T> = {
-  data: T[]
-  columns: ColumnDef<T>[]
-  formFields: FormField[]
-  formFieldsValidationSchema: any
-  footerData?: T // Add footerData prop to pass custom footer data
+  data: T[];
+  columns: ColumnDef<T>[];
+  formFields: FormField[];
+  formFieldsValidationSchema: any;
+  footerData?: T; // Add footerData prop to pass custom footer data
 
-  onAdd?: (row: T) => void
-  onEdit?: (index: number, row: T) => void
-  onDelete?: (index: number, row: T) => void
+  onAdd?: (row: T) => void;
+  onEdit?: (index: number, row: T) => void;
+  onDelete?: (index: number, row: T) => void;
 
-  bulkAction?: { label: string; onClick: (rows: Row<T>[]) => void }
-}
+  bulkAction?: { label: string; onClick: (rows: Row<T>[]) => void };
+};
 
 export function TableFields<T>({
   data,
@@ -50,23 +58,23 @@ export function TableFields<T>({
   onAdd,
   onEdit,
   onDelete,
-  bulkAction
+  bulkAction,
 }: CstTableProps<T>) {
-  const [isSheetOpen, setIsSheetOpen] = useState(false)
-  const [selectedRowData, setSelectedRowData] = useState<T | null>(null)
-  const [selectedRowIndex, setSelectedRowIndex] = useState<number | null>(null)
-  const [globalFilter, setGlobalFilter] = useState('')
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [selectedRowData, setSelectedRowData] = useState<T | null>(null);
+  const [selectedRowIndex, setSelectedRowIndex] = useState<number | null>(null);
+  const [globalFilter, setGlobalFilter] = useState("");
 
-  const [sorting, setSorting] = useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = useState({})
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({
     data,
     columns: [
       {
-        id: 'select',
+        id: "select",
         header: ({ table }) => (
           <input
             type="checkbox"
@@ -75,13 +83,17 @@ export function TableFields<T>({
           />
         ),
         cell: ({ row }) => (
-          <input type="checkbox" checked={row.getIsSelected()} onChange={row.getToggleSelectedHandler()} />
-        )
+          <input
+            type="checkbox"
+            checked={row.getIsSelected()}
+            onChange={row.getToggleSelectedHandler()}
+          />
+        ),
       },
       ...columns,
       {
-        id: 'actions',
-        header: 'Actions',
+        id: "actions",
+        header: "Actions",
         cell: ({ row }) => (
           <div className="flex space-x-1">
             <Button
@@ -89,9 +101,9 @@ export function TableFields<T>({
               variant="outline"
               size="sm"
               onClick={() => {
-                setSelectedRowData(row.original)
-                setSelectedRowIndex(row.index)
-                setIsSheetOpen(true)
+                setSelectedRowData(row.original);
+                setSelectedRowIndex(row.index);
+                setIsSheetOpen(true);
               }}
             >
               <Pencil size={16} />
@@ -105,15 +117,15 @@ export function TableFields<T>({
               <Trash size={16} />
             </Button>
           </div>
-        )
-      }
+        ),
+      },
     ],
     state: {
       sorting,
       columnFilters,
       columnVisibility,
       rowSelection,
-      globalFilter
+      globalFilter,
     },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -124,8 +136,8 @@ export function TableFields<T>({
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    globalFilterFn: 'includesString'
-  })
+    globalFilterFn: "includesString",
+  });
 
   return (
     <div className="w-full">
@@ -137,7 +149,7 @@ export function TableFields<T>({
             size="sm"
             className="ml-auto"
             onClick={() => {
-              bulkAction.onClick(table.getSelectedRowModel().rows)
+              bulkAction.onClick(table.getSelectedRowModel().rows);
             }}
           >
             {bulkAction.label}
@@ -181,9 +193,9 @@ export function TableFields<T>({
           variant="outline"
           size="sm"
           onClick={() => {
-            setSelectedRowData(null)
-            setSelectedRowIndex(null)
-            setIsSheetOpen(true)
+            setSelectedRowData(null);
+            setSelectedRowIndex(null);
+            setIsSheetOpen(true);
           }}
         >
           <Plus size={16} />
@@ -196,7 +208,12 @@ export function TableFields<T>({
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
                   <TableHead key={header.id}>
-                    {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                   </TableHead>
                 ))}
               </TableRow>
@@ -205,15 +222,26 @@ export function TableFields<T>({
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
                   ))}
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length + 2} className="h-24 text-center">
+                <TableCell
+                  colSpan={columns.length + 2}
+                  className="h-24 text-center"
+                >
                   No results.
                 </TableCell>
               </TableRow>
@@ -225,7 +253,7 @@ export function TableFields<T>({
               <TableRow className="font-semibold bg-gray-100">
                 {table.getAllColumns().map((column) => (
                   <TableCell key={column.id}>
-                    {footerData[column.id as keyof T] || ''} {/* Display the corresponding footer data */}
+                    {String(footerData[column.id as keyof T] || "")}
                   </TableCell>
                 ))}
               </TableRow>
@@ -235,8 +263,8 @@ export function TableFields<T>({
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s)
-          selected.
+          {table.getFilteredSelectedRowModel().rows.length} of{" "}
+          {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
         <div className="space-x-2">
           <Button
@@ -267,19 +295,25 @@ export function TableFields<T>({
         fieldsInitialValue={
           selectedRowData ||
           formFields
-            ?.map((field) => ({ name: field.name, value: field.type === 'number' ? 0 : '' }))
+            ?.map((field) => ({
+              name: field.name,
+              value: field.type === "number" ? 0 : "",
+            }))
             ?.reduce((a, v) => ({ ...a, [v.name]: v.value }), {}) ||
           {}
         }
         fieldsValidationSchema={formFieldsValidationSchema}
         onSubmit={(values: any) => {
           if (!selectedRowData) {
-            onAdd && onAdd(values)
-          } else if (selectedRowIndex !== null && selectedRowIndex !== undefined) {
-            onEdit && onEdit(selectedRowIndex, values)
+            onAdd && onAdd(values);
+          } else if (
+            selectedRowIndex !== null &&
+            selectedRowIndex !== undefined
+          ) {
+            onEdit && onEdit(selectedRowIndex, values);
           }
         }}
       />
     </div>
-  )
+  );
 }
