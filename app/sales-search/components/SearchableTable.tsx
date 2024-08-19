@@ -77,7 +77,7 @@ export const columns: ColumnDef<typeof data[0]>[] = [
     accessorKey: "salesPrice",
     header: "Sales Price",
     cell: ({ row }) => {
-      const amount = row.getValue("salesPrice")
+      const amount: number = row.getValue("salesPrice")
       const formatted = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
@@ -89,7 +89,7 @@ export const columns: ColumnDef<typeof data[0]>[] = [
     accessorKey: "rateableValue",
     header: "Rateable Value",
     cell: ({ row }) => {
-      const amount = row.getValue("rateableValue")
+      const amount: number = row.getValue("rateableValue")
       const formatted = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
