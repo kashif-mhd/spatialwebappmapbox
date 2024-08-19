@@ -4,7 +4,7 @@ import Link from 'next/link';
 const menuItems = [
   { path: '/', icon: <Gauge />, label: 'Dashboard' },
   { path: '/map-view', icon: <Locate />, label: 'Map View' },
-  { path: '/sales', icon: <BarChart4 />, label: 'Sales Search' },
+  { path: '/sales-search', icon: <BarChart4 />, label: 'Sales Search' },
 ];
 
 const Menu = () => {
