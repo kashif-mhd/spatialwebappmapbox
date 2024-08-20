@@ -17,6 +17,9 @@ export default async function Index() {
   if (!session) {
     redirect("/login");
   }
+  if(session){
+    redirect("/dashboard");
+  }
   
   const canInitSupabaseClient = () => {
     // This function is just for the interactive tutorial.
