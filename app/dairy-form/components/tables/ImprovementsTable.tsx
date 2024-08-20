@@ -13,7 +13,7 @@ const improvementValidationSchema = yup.object().shape({
   improvement: yup.string().required().label("Improvement"),
   unit: yup.number().required().label("Unit"),
   rate: yup.number().required().label("Rate"),
-  value: yup.number().required().label("Value"),
+  value: yup.number(). nullable().label("Value"),
   condition: yup.string().required().label("Condition"),
   description: yup.string().required().label("Description"),
 });
