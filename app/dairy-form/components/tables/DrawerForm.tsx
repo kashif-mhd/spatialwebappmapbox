@@ -62,6 +62,9 @@ const DrawerForm: FC<Props> = ({
     actions.resetForm()
   }
 
+  if(!isDrawerOpen)
+    return null;
+  
   return (
     <Sheet open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
       <Formik
