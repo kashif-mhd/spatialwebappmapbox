@@ -17,7 +17,7 @@ const pastoralLandValidationSchema = yup.object().shape({
   msPerHa: yup.number().required().label("MS/Ha"),
   totalMs: yup.number().required().label("Total MS"),
   suPerHa: yup.number().required().label("SU/Ha"),
-  totalSu: yup.number().required().label("Total SU"),
+  totalSu: yup.number().nullable().label("Total SU"),
   inOff: yup.boolean().nullable().label("In Off"),
   description: yup.string().required().label("Description"),
 });
