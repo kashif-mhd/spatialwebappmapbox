@@ -297,7 +297,7 @@ export function TableFields<T>({
           formFields
             ?.map((field) => ({
               name: field.name,
-              value: field.type === "number" ? 0 : "",
+              value: field.type === "number" ? undefined : "",
             }))
             ?.reduce((a, v) => ({ ...a, [v.name]: v.value }), {}) ||
           {}
