@@ -81,7 +81,7 @@ export const pastoralColumns: ColumnDef<PastoralData>[] = [
 export const improvementColumns: ColumnDef<ImprovementData>[] = [
   { accessorKey: 'improvement', header: 'Improvement' },
   { accessorKey: 'unit', header: 'Unit' },
-  { accessorKey: 'ratePerUnit', header: 'Rate /Unit' },
+  { accessorKey: 'ratePerUnit', header: 'Rate' },
   { accessorKey: 'value', header: 'Value' },
   { accessorKey: 'condition', header: 'Cond' },
   { accessorKey: 'description', header: 'Description' }
@@ -90,14 +90,14 @@ export const improvementColumns: ColumnDef<ImprovementData>[] = [
 export const inclusionColumns: ColumnDef<InclusionData>[] = [
   { accessorKey: 'improvement', header: 'Item' },
   { accessorKey: 'unit', header: 'Unit' },
-  { accessorKey: 'ratePerUnit', header: 'Rate /Unit' },
+  { accessorKey: 'ratePerUnit', header: 'Rate' },
   { accessorKey: 'value', header: 'Value' },
   { accessorKey: 'description', header: 'Description' }
 ]
 export const detailChattelsColumns: ColumnDef<DetailChattelsData>[] = [
   { accessorKey: 'item', header: 'Item' },
   { accessorKey: 'unit', header: 'Unit' },
-  { accessorKey: 'ratePerUnit', header: 'Rate /Unit' },
+  { accessorKey: 'ratePerUnit', header: 'Rate' },
   { accessorKey: 'value', header: 'Value' },
   { accessorKey: 'description', header: 'Description' }
 ]
