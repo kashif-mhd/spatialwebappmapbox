@@ -219,7 +219,25 @@ const SearchMain = () => {
                 <Label className="mb-2">
                 Rateable Value
                 </Label>
-                <Input type="number" />
+                  <Slider.Root
+                    min={0}
+                  max={1950000}
+                  step={1000}
+                  value={sliderValues}
+                  onValueChange={(values) => setSliderValues(values)}
+                  className="relative flex items-center select-none touch-none w-full h-5"
+                >
+                  <Slider.Track className="bg-gray-300 relative flex-1 rounded-full h-1">
+                    <Slider.Range className="absolute bg-primary rounded-full h-full" />
+                  </Slider.Track>
+                       <Slider.Thumb className="block w-4 h-4 bg-primary rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" />
+                  <Slider.Thumb className="block w-4 h-4 bg-primary rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" />
+             
+                </Slider.Root>
+                    <div className="flex justify-between mt-2 text-sm text-gray-700">
+                  <span>{sliderValues[0].toLocaleString()}</span>
+                  <span>{sliderValues[1].toLocaleString()}</span>
+                </div>
               </div>   
               <div >
                 <Label className="mb-2">
@@ -249,7 +267,25 @@ const SearchMain = () => {
                 <Label className="mb-2">
               Land Area
                 </Label>
-                <Input type="number" />
+                  <Slider.Root
+                    min={0}
+                  max={1950000}
+                  step={1000}
+                  value={sliderValues}
+                  onValueChange={(values) => setSliderValues(values)}
+                  className="relative flex items-center select-none touch-none w-full h-5"
+                >
+                  <Slider.Track className="bg-gray-300 relative flex-1 rounded-full h-1">
+                    <Slider.Range className="absolute bg-primary rounded-full h-full" />
+                  </Slider.Track>
+                       <Slider.Thumb className="block w-4 h-4 bg-primary rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" />
+                  <Slider.Thumb className="block w-4 h-4 bg-primary rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" />
+             
+                </Slider.Root>
+                    <div className="flex justify-between mt-2 text-sm text-gray-700">
+                  <span>{sliderValues[0].toLocaleString()}</span>
+                  <span>{sliderValues[1].toLocaleString()}</span>
+                </div>
               </div>
                   <div>
                 <Label className="mb-2">
