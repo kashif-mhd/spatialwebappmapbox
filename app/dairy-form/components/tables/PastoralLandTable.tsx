@@ -1,94 +1,14 @@
 'use client'
 
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { FC, useMemo } from 'react'
+import { FC, useEffect, useMemo, useState } from 'react'
 import { FieldsType, pastoralColumns } from '../formData'
 import { TableFields } from './TableFields'
 import { FormField } from './DrawerForm'
 import { FieldArray, useFormikContext } from 'formik'
 import * as yup from 'yup'
+import { createClient } from '@/utils/supabase/client'
 
-const formFields: FormField[] = [
-  {
-    type: 'text',
-    label: 'Land Class',
-    name: 'landClass',
-    groupClassName: 'grid grid-cols-4 items-center gap-4',
-    labelClassName: 'text-right',
-    className: 'col-span-3'
-  },
-  {
-    label: 'Area (Ha)',
-    name: 'area',
-    type: 'number',
-    groupClassName: 'grid grid-cols-4 items-center gap-4',
-    labelClassName: 'text-right',
-    className: 'col-span-3'
-  },
-  {
-    label: 'Value/Ha',
-    name: 'valuePerHa',
-    type: 'number',
-    groupClassName: 'grid grid-cols-4 items-center gap-4',
-    labelClassName: 'text-right',
-    className: 'col-span-3'
-  },
-  {
-    label: 'Value',
-    name: 'totalValue',
-    type: 'number',
-    groupClassName: 'grid grid-cols-4 items-center gap-4',
-    labelClassName: 'text-right',
-    className: 'col-span-3'
-  },
-  {
-    label: 'MS/Ha',
-    name: 'msPerHa',
-    type: 'number',
-    groupClassName: 'grid grid-cols-4 items-center gap-4',
-    labelClassName: 'text-right',
-    className: 'col-span-3'
-  },
-  {
-    label: 'Total MS',
-    name: 'totalMs',
-    type: 'number',
-    groupClassName: 'grid grid-cols-4 items-center gap-4',
-    labelClassName: 'text-right',
-    className: 'col-span-3'
-  },
-  {
-    label: 'SU/Ha',
-    name: 'suPerHa',
-    type: 'number',
-    groupClassName: 'grid grid-cols-4 items-center gap-4',
-    labelClassName: 'text-right',
-    className: 'col-span-3'
-  },
-  {
-    label: 'Total SU',
-    name: 'totalSu',
-    type: 'number',
-    groupClassName: 'grid grid-cols-4 items-center gap-4',
-    labelClassName: 'text-right',
-    className: 'col-span-3',
-    readOnly: true
-  },
-  {
-    type: 'checkbox',
-    label: 'In Off',
-    name: 'inOff',
-    groupClassName: 'grid grid-cols-4 items-center gap-4',
-    labelClassName: 'text-right',
-    className: 'col-span-3'
-  },
-  {
-    label: 'Description',
-    name: 'description',
-    type: 'textarea',
-    groupClassName: 'grid gap-4'
-  }
-]
 
 const pastoralLandValidationSchema = yup.object().shape({
   landClass: yup.string().required().label('Land Class'),
@@ -105,6 +25,8 @@ const pastoralLandValidationSchema = yup.object().shape({
 
 export const PastoralLandTable: FC = () => {
   const formik = useFormikContext<FieldsType>()
+  const [landClassOptions, setLandClassOptions] = useState<{ label: string; value: string }[]>([]);
+  
   const footerData = useMemo(() => {
     const data = formik.values.pastoral_land || []
     return {
@@ -121,6 +43,113 @@ export const PastoralLandTable: FC = () => {
       description: ''
     }
   }, [formik.values.pastoral_land])
+
+  const formFields: FormField[] = [
+    {
+      type: 'select',
+      label: 'Land Class',
+      name: 'landClass',
+      groupClassName: 'grid grid-cols-4 items-center gap-4',
+      labelClassName: 'text-right',
+      className: 'col-span-3',
+      options: landClassOptions,
+    },
+    {
+      label: 'Area (Ha)',
+      name: 'area',
+      type: 'number',
+      groupClassName: 'grid grid-cols-4 items-center gap-4',
+      labelClassName: 'text-right',
+      className: 'col-span-3'
+    },
+    {
+      label: 'Value/Ha',
+      name: 'valuePerHa',
+      type: 'number',
+      groupClassName: 'grid grid-cols-4 items-center gap-4',
+      labelClassName: 'text-right',
+      className: 'col-span-3'
+    },
+    {
+      label: 'Value',
+      name: 'totalValue',
+      type: 'number',
+      groupClassName: 'grid grid-cols-4 items-center gap-4',
+      labelClassName: 'text-right',
+      className: 'col-span-3'
+    },
+    {
+      label: 'MS/Ha',
+      name: 'msPerHa',
+      type: 'number',
+      groupClassName: 'grid grid-cols-4 items-center gap-4',
+      labelClassName: 'text-right',
+      className: 'col-span-3'
+    },
+    {
+      label: 'Total MS',
+      name: 'totalMs',
+      type: 'number',
+      groupClassName: 'grid grid-cols-4 items-center gap-4',
+      labelClassName: 'text-right',
+      className: 'col-span-3'
+    },
+    {
+      label: 'SU/Ha',
+      name: 'suPerHa',
+      type: 'number',
+      groupClassName: 'grid grid-cols-4 items-center gap-4',
+      labelClassName: 'text-right',
+      className: 'col-span-3'
+    },
+    {
+      label: 'Total SU',
+      name: 'totalSu',
+      type: 'number',
+      groupClassName: 'grid grid-cols-4 items-center gap-4',
+      labelClassName: 'text-right',
+      className: 'col-span-3',
+      readOnly: true
+    },
+    {
+      type: 'checkbox',
+      label: 'In Off',
+      name: 'inOff',
+      groupClassName: 'grid grid-cols-4 items-center gap-4',
+      labelClassName: 'text-right',
+      className: 'col-span-3'
+    },
+    {
+      label: 'Description',
+      name: 'description',
+      type: 'textarea',
+      groupClassName: 'grid gap-4'
+    }
+  ]
+
+  useEffect(() => {
+    const fetchLandClasses = async () => {
+      const supabase = createClient();
+      const { data, error } = await supabase.from('list_pastoral_land_classes').select('id, strlandclass');
+
+      if (error) {
+        console.error('Error fetching land classes:', error.message);
+        return;
+      }
+
+      if (data) {
+        const options = data.map((item: { id: string; strlandclass: string }) => ({
+          label: item.strlandclass,
+          value: item.id,
+        }));
+        setLandClassOptions(options);
+      }
+    };
+
+    fetchLandClasses();
+  }, []);
+
+  
   return (
     <Card>
       <CardHeader className="pb-2">
