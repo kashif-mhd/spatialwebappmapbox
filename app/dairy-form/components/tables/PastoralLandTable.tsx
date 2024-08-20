@@ -13,9 +13,9 @@ const pastoralLandValidationSchema = yup.object().shape({
   landClass: yup.string().required().label("Land Class"),
   area: yup.number().required().label("Area (Ha)"),
   valuePerHa: yup.number().required().label("Value/Ha"),
-  totalValue: yup.number().required().label("Total Value"),
+  totalValue: yup.number().nullable().label("Total Value"),
   msPerHa: yup.number().required().label("MS/Ha"),
-  totalMs: yup.number().required().label("Total MS"),
+  totalMs: yup.number().nullable().label("Total MS"),
   suPerHa: yup.number().required().label("SU/Ha"),
   totalSu: yup.number().nullable().label("Total SU"),
   inOff: yup.boolean().nullable().label("In Off"),
@@ -61,6 +61,8 @@ export const PastoralLandTable: FC = () => {
       groupClassName: "grid grid-cols-4 items-center gap-4",
       labelClassName: "text-right",
       className: "col-span-3",
+      disabled: true,
+      placeholder: 'This field is automatically calculated on submission.'
     },
     {
       label: "MS/Ha",
@@ -77,6 +79,8 @@ export const PastoralLandTable: FC = () => {
       groupClassName: "grid grid-cols-4 items-center gap-4",
       labelClassName: "text-right",
       className: "col-span-3",
+      disabled: true,
+      placeholder: 'This field is automatically calculated on submission.'
     },
     {
       label: "SU/Ha",
@@ -93,7 +97,8 @@ export const PastoralLandTable: FC = () => {
       groupClassName: "grid grid-cols-4 items-center gap-4",
       labelClassName: "text-right",
       className: "col-span-3",
-      readOnly: true,
+      disabled: true,
+      placeholder: 'This field is automatically calculated on submission.'
     },
     {
       type: "checkbox",
@@ -171,11 +176,15 @@ export const PastoralLandTable: FC = () => {
               onAdd={(row) => {
                 const calculatedRow = { ...row };
                 calculatedRow.totalSu = row.suPerHa * row.area;
+                calculatedRow.totalValue = row.valuePerHa * row.area
+                calculatedRow.totalMs = row.msPerHa * row.area;
                 arrayHelpers.push(calculatedRow);
               }}
               onEdit={(index, row) => {
                 const calculatedRow = { ...row };
                 calculatedRow.totalSu = row.suPerHa * row.area;
+                calculatedRow.totalValue = row.valuePerHa * row.area
+                calculatedRow.totalMs = row.msPerHa * row.area;
                 arrayHelpers.replace(index, row);
               }}
               onDelete={(index) => arrayHelpers.remove(index)}
