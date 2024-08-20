@@ -89,12 +89,12 @@ export const InclusionTable = () => {
               onAdd={(row) => {
                 const calculatedRow = { ...row }
                 calculatedRow.value = row.unit * row.ratePerUnit
-                arrayHelpers.push(row)
+                arrayHelpers.push(calculatedRow)
               }}
               onEdit={(index, row) => {
                 const calculatedRow = { ...row }
                 calculatedRow.value = row.unit * row.ratePerUnit
-                arrayHelpers.replace(index, row)
+                arrayHelpers.replace(index, calculatedRow)
               }}
               onDelete={(index) => arrayHelpers.remove(index)}
             />
