@@ -9,14 +9,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { FieldsType } from './formData'
 import { Button } from '@/components/ui/button'
 import { DetailChattelsTable, ImprovementsTable, InclusionTable, PastoralLandTable } from './tables'
-import { LocalityData } from '../page'
+import { ListValuersData, LocalityData } from '../page'
 
 type FieldsProps = {
   formik: FormikProps<FieldsType>
   localityData: LocalityData[]
+  listValuersData: ListValuersData[]
 }
 
-const Fields: React.FC<FieldsProps> = ({ formik, localityData }) => {
+const Fields: React.FC<FieldsProps> = ({ formik, localityData, listValuersData }) => {
 
   const localityArray = useMemo(() => {
     const uniqueLocalities = new Map();
@@ -41,6 +42,14 @@ const Fields: React.FC<FieldsProps> = ({ formik, localityData }) => {
     });
     return Array.from(uniqueLocalities.values());
   }, [localityData]);
+
+  const listValuersArray = useMemo(() => {
+    const uniqueListValuers = new Map();
+    listValuersData.forEach(item => {
+      uniqueListValuers.set(item.id, { label: item.strvaluername, value: item.id });
+    });
+    return Array.from(uniqueListValuers.values());
+  }, [listValuersData]);
   
   const setComputedValue = useCallback(
     (fieldName: keyof FieldsType, value: number) => {
@@ -309,7 +318,7 @@ const Fields: React.FC<FieldsProps> = ({ formik, localityData }) => {
           <Input type="number" name="gcv" label="GCV" placeholder="Enter GCV" />
           <Input type="text" name="gcv_percentage" label="GCV Percentage" placeholder="GCV Percentage" readOnly />
 
-          <Select name="analysed_by" label="Analysed By" options={[]} />
+          <Select name="analysed_by" label="Analysed By" options={listValuersArray} />
         </div>
       </Card>
 
