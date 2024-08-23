@@ -40,7 +40,8 @@ const formFields: FormField[] = [
     groupClassName: 'grid grid-cols-4 items-center gap-4',
     labelClassName: 'text-right',
     className: 'col-span-3',
-    readOnly: true
+    disabled: true,
+    placeholder: 'This field is automatically calculated on submission.'
   },
   {
     label: 'Description',
@@ -54,7 +55,7 @@ const detailChattelsValidationSchema = yup.object().shape({
   item: yup.string().required().label('Item'),
   unit: yup.number().required().label('Unit'),
   rate: yup.number().required().label('Rate'),
-  value: yup.number().required().label('Value'),
+  value: yup.number().nullable().label('Value'),
   description: yup.string().required().label('Description')
 })
 
