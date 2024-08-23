@@ -11,6 +11,11 @@ export type LocalityData = {
   district: string
 }
 
+export type ListValuersData = {
+  id: string
+  strvaluername: string;
+}
+
 export default async function DairyForm() {
   const supabase = createClient()
 
@@ -29,6 +34,13 @@ export default async function DairyForm() {
     return <div>Error loading data</div>
   }
 
+  const { data: listValuersData, error:listValuersError } = await supabase.from('list_valuers').select('*')
+
+  if (listValuersError) {
+    console.error('Error fetching list valuers data:', error)
+    return <div>Error loading list valuers data</div>
+  }
+
   return (
     <Container>
       <div className="px-6">
@@ -36,7 +48,7 @@ export default async function DairyForm() {
           <span className="font-semibold text-xl dark:text-black">Dashboard</span>
         </div>
 
-        <DataForm localityData={localityData} />
+        <DataForm localityData={localityData} listValuersData={listValuersData} />
       </div>
     </Container>
   )
