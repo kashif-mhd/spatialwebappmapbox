@@ -1,9 +1,10 @@
-import { Gauge, Locate, BarChart4, BookText } from 'lucide-react';
+import { Gauge, Locate, BarChart4, BookText, Layers } from 'lucide-react';
 import Link from 'next/link';
 
 const menuItems = [
   { path: '/dashboard', icon: <Gauge />, label: 'Dashboard' },
   { path: '/map-view', icon: <Locate />, label: 'Map View' },
+  { path: '/form-list', icon: <Layers />, label: 'Form List' },
   { path: '/dairy-form', icon: <BookText />, label: 'Dairy Form' },
   { path: '/sales-search', icon: <BarChart4 />, label: 'Sales Search' },
 ];
