@@ -150,7 +150,6 @@ const DataForm: FC<DataFormProps> = ({
       ],
     };
     try {
-      // Call the Supabase RPC function
       const { data, error } = await supabase.rpc("insert_sales_information", {
         payload: updatedPayLoad,
       });
@@ -158,11 +157,9 @@ const DataForm: FC<DataFormProps> = ({
       if (error) {
         console.error("Error inserting data:", error);
         actions.setSubmitting(false);
-        // Optionally, handle the error (e.g., show a notification)
       } else {
         console.log("Data inserted successfully:", data);
         actions.setSubmitting(false);
-        // Optionally, handle the success (e.g., redirect to another page)
       }
     } catch (err) {
       console.error("Unexpected error:", err);
