@@ -23,6 +23,9 @@ export const ImprovementsTable = () => {
   const [improvementTypeOptions, setImprovementTypesOptions] = useState<
     { label: string; value: string }[]
   >([]);
+  const [buildingConditionOptions, setBuildingConditionOptions] = useState<
+    { label: string; value: string }[]
+  >([]);
 
   const formFields: FormField[] = [
     {
@@ -60,27 +63,11 @@ export const ImprovementsTable = () => {
       readOnly: true,
     },
     {
+      
       label: "Condition",
       name: "condition",
       type: "select",
-      options: [
-        {
-          label: "Excellent",
-          value: "excellent",
-        },
-        {
-          label: "Good",
-          value: "good",
-        },
-        {
-          label: "Fair",
-          value: "fair",
-        },
-        {
-          label: "Poor",
-          value: "poor",
-        },
-      ],
+      options: buildingConditionOptions,
       groupClassName: "grid grid-cols-4 items-center gap-4",
       labelClassName: "text-right",
       className: "col-span-3",
@@ -107,8 +94,10 @@ export const ImprovementsTable = () => {
   }, [formik.values.improvements]);
 
   useEffect(() => {
-    const fetchImprovementTypes = async () => {
+    const fetchData = async () => {
       const supabase = createClient();
+
+            /// fetch improvement types
       const { data, error } = await supabase
         .from("list_improvements")
         .select("id, strimprovementtype");
@@ -127,9 +116,30 @@ export const ImprovementsTable = () => {
         );
         setImprovementTypesOptions(options);
       }
+
+
+      /// fetch building conditions
+      const { data: buildingConditionsData, error: buildingConditionsError } = await supabase
+      .from("list_building_condition")
+      .select("id, condition");
+
+    if (buildingConditionsError) {
+      console.error("Error fetching building conditions:", buildingConditionsError.message);
+      return;
+    }
+
+    if (buildingConditionsData) {
+      const options = buildingConditionsData.map(
+        (item: { id: string; condition: string }) => ({
+          label: item.condition,
+          value: item.id,
+        })
+      );
+      setBuildingConditionOptions(options);
+    }
     };
 
-    fetchImprovementTypes();
+    fetchData();
   }, []);
 
   return (
