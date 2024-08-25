@@ -1,6 +1,59 @@
 import { ColumnDef } from '@tanstack/react-table'
 import * as yup from 'yup'
 
+export type SalesBasedInformationData = {
+    id: string;
+    lnggcv: number;
+    lngglv: number;
+    lnggvi: number;
+    strflag: string;
+    strroll: string;
+    lngnlimit: string;
+    region_id: string | null;
+    strtenure: string;
+    dtmgvsdate: string;
+    straddress: string;
+    district_id: string | null;
+    dtmsaledate: string;
+    lng300index: number | null;
+    lngaltitude: string;
+    lngrainfall: string;
+    locality_id: string;
+    strdistance: string;
+    strfilepath: string | null;
+    lngsiteindex: number | null;
+    lngtotalarea: number;
+    lngactualkgms: number;
+    lngavgeffkgms: number;
+    lngstockunits: number;
+    strassessment: string;
+    strfolderpath: string | null;
+    lngreportorder: number | null;
+    strpropertyuse: string | null;
+    dtmdateanalysed: string;
+    lngactualebitda: number;
+    lngavgeffebitda: number;
+    lngdistancepulp: number | null;
+    lngfarmchattels: number;
+    organization_id: string;
+    strpropertyname: string;
+    strrelationship: string;
+    strstreetnumber: string;
+    spatialdatafield: string | null;
+    strrecordoftitle: string;
+    lngdistanceexport: number | null;
+    lnggrosssaleprice: number;
+    stranalysisstatus: string;
+    strvalueranalysed: string;
+    strsaledescription: string;
+    strvendorpurchaser: string;
+    lngactualstockunits: number;
+    lngdistancedomestic: number | null;
+    lngdwellingchattels: number;
+    strlegaldescription: string;
+    strconfidentialnotes: string;
+  };
+
 export type PastoralData = {
   id: string
   inOff: boolean
@@ -164,6 +217,7 @@ export const formInitialValues = {
   inclusions_data: [],
   detail_chattels_data: []
 }
+
 
 export type FieldsType = {
   vendor: string
