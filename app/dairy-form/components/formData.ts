@@ -1,29 +1,6 @@
 import { ColumnDef } from '@tanstack/react-table'
 import * as yup from 'yup'
 
-export const frameworks = [
-  {
-    value: 'next.js',
-    label: 'Next.js'
-  },
-  {
-    value: 'sveltekit',
-    label: 'SvelteKit'
-  },
-  {
-    value: 'nuxt.js',
-    label: 'Nuxt.js'
-  },
-  {
-    value: 'remix',
-    label: 'Remix'
-  },
-  {
-    value: 'astro',
-    label: 'Astro'
-  }
-]
-
 export type PastoralData = {
   id: string
   inOff: boolean
@@ -56,6 +33,7 @@ export type InclusionData = {
   value: number
   description: string
 }
+
 export type DetailChattelsData = {
   id: string
   item: string
@@ -94,6 +72,7 @@ export const inclusionColumns: ColumnDef<InclusionData>[] = [
   { accessorKey: 'value', header: 'Value' },
   { accessorKey: 'description', header: 'Description' }
 ]
+
 export const detailChattelsColumns: ColumnDef<DetailChattelsData>[] = [
   { accessorKey: 'item', header: 'Item' },
   { accessorKey: 'unit', header: 'Unit' },
@@ -180,42 +159,9 @@ export const formInitialValues = {
   site_no: 0,
   site_value: 0,
   site_total_value: 0,
-  pastoral_land: [
-    {
-      id: '1',
-      landClass: 'Class A',
-      area: 100,
-      valuePerHa: 5000,
-      totalValue: 500000,
-      msPerHa: 50,
-      totalMs: 5000,
-      suPerHa: 10,
-      totalSu: 1000,
-      description: 'Description A',
-      inOff: false
-    }
-  ],
-  improvements: [
-    {
-      id: '1',
-      improvement: 'Fence',
-      unit: 10,
-      ratePerUnit: 100,
-      value: 1000,
-      condition: 'Good',
-      description: 'Wooden fence around property'
-    }
-  ],
-  inclusions_data: [
-    {
-      id: '1',
-      improvement: 'Fence',
-      unit: 10,
-      ratePerUnit: 100,
-      value: 1000,
-      description: 'Wooden fence around property'
-    }
-  ],
+  pastoral_land: [],
+  improvements: [],
+  inclusions_data: [],
   detail_chattels_data: []
 }
 

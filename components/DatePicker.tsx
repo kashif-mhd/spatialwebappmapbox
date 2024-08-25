@@ -27,13 +27,13 @@ export const DatePicker: FC<DatePickerProps> = ({
   onBlur
 }) => {
   const [currentValue, setCurrentValue] = useState<Date | undefined>(
-    value && isValid(value) ? new Date(value) : undefined
+    value && isValid(new Date(value)) ? new Date(value) : undefined
   )
 
   const handleChange = (value: Date | undefined) => {
     setCurrentValue(value)
     if (typeof onChange === 'function') {
-      const date = value ? format(value, 'yyyy-MM-dd') : undefined
+      const date = value ? value.toISOString() : undefined
       onChange(date)
     }
   }

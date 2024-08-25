@@ -18,39 +18,38 @@ type FieldsProps = {
 }
 
 const Fields: React.FC<FieldsProps> = ({ formik, localityData, listValuersData }) => {
-
   const localityArray = useMemo(() => {
-    const uniqueLocalities = new Map();
-    localityData.forEach(item => {
-      uniqueLocalities.set(item.locality, { label: item.locality, value: item.locality });
-    });
-    return Array.from(uniqueLocalities.values());
-  }, [localityData]);
+    const uniqueLocalities = new Map()
+    localityData.forEach((item) => {
+      uniqueLocalities.set(item.locality, { label: item.locality, value: item.locality })
+    })
+    return Array.from(uniqueLocalities.values())
+  }, [localityData])
 
   const districtArray = useMemo(() => {
-    const uniqueLocalities = new Map();
-    localityData.forEach(item => {
-      uniqueLocalities.set(item.district, { label: item.district, value: item.district });
-    });
-    return Array.from(uniqueLocalities.values());
-  }, [localityData]);
+    const uniqueLocalities = new Map()
+    localityData.forEach((item) => {
+      uniqueLocalities.set(item.district, { label: item.district, value: item.district })
+    })
+    return Array.from(uniqueLocalities.values())
+  }, [localityData])
 
   const regionArray = useMemo(() => {
-    const uniqueLocalities = new Map();
-    localityData.forEach(item => {
-      uniqueLocalities.set(item.region, { label: item.region, value: item.region });
-    });
-    return Array.from(uniqueLocalities.values());
-  }, [localityData]);
+    const uniqueLocalities = new Map()
+    localityData.forEach((item) => {
+      uniqueLocalities.set(item.region, { label: item.region, value: item.region })
+    })
+    return Array.from(uniqueLocalities.values())
+  }, [localityData])
 
   const listValuersArray = useMemo(() => {
-    const uniqueListValuers = new Map();
-    listValuersData.forEach(item => {
-      uniqueListValuers.set(item.id, { label: item.strvaluername, value: item.id });
-    });
-    return Array.from(uniqueListValuers.values());
-  }, [listValuersData]);
-  
+    const uniqueListValuers = new Map()
+    listValuersData.forEach((item) => {
+      uniqueListValuers.set(item.id, { label: item.strvaluername, value: item.id })
+    })
+    return Array.from(uniqueListValuers.values())
+  }, [listValuersData])
+
   const setComputedValue = useCallback(
     (fieldName: keyof FieldsType, value: number) => {
       if (Number.isNaN(value)) return
@@ -275,10 +274,35 @@ const Fields: React.FC<FieldsProps> = ({ formik, localityData, listValuersData }
     setComputedValue('avgeff_cap_rate', formik.values.avgeff_ebitda / formik.values.net_sale_price)
   }, [setComputedValue, formik.values.avgeff_ebitda, formik.values.net_sale_price])
 
+  useEffect(() => {
+    setComputedValue('site_total_value', formik.values.site_no * formik.values.site_value)
+  }, [setComputedValue, formik.values.site_no, formik.values.site_value])
+
   return (
     <div className="grid gap-4">
       <div className="flex justify-end">
-        <Button type="submit">Submit</Button>
+        <Button type="submit" disabled={formik.isSubmitting}>
+          {formik.isSubmitting && (
+            <svg
+              aria-hidden="true"
+              role="status"
+              className="inline w-4 h-4 me-3 text-white animate-spin"
+              viewBox="0 0 100 101"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                fill="#E5E7EB"
+              />
+              <path
+                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                fill="currentColor"
+              />
+            </svg>
+          )}
+          Submit
+        </Button>
       </div>
 
       <Card className="p-3">
@@ -313,10 +337,10 @@ const Fields: React.FC<FieldsProps> = ({ formik, localityData, listValuersData }
         <div className="grid grid-cols-4 gap-3">
           <Input type="text" name="relationship" label="Relationship" placeholder="Enter Relationship" />
           <Input type="number" name="total_area" label="Total Area" placeholder="Enter Total Area" />
-          <Input type="number" name="roll" label="Roll" placeholder="Enter Roll" />
+          <Input type="string" name="roll" label="Roll" placeholder="Enter Roll" />
 
           <Input type="number" name="gcv" label="GCV" placeholder="Enter GCV" />
-          <Input type="text" name="gcv_percentage" label="GCV Percentage" placeholder="GCV Percentage" readOnly />
+          <Input type="number" name="gcv_percentage" label="GCV Percentage" placeholder="GCV Percentage" readOnly />
 
           <Select name="analysed_by" label="Analysed By" options={listValuersArray} />
         </div>
@@ -330,8 +354,8 @@ const Fields: React.FC<FieldsProps> = ({ formik, localityData, listValuersData }
 
           <Input type="number" name="assess" label="Assess" placeholder="Enter Assess" />
 
-          <Input type="text" name="glv" label="GLV" placeholder="Enter GLV" />
-          <Input type="text" name="glv_percentage" label="GLV Percentage" placeholder="GLV Percentage" readOnly />
+          <Input type="number" name="glv" label="GLV" placeholder="Enter GLV" />
+          <Input type="number" name="glv_percentage" label="GLV Percentage" placeholder="GLV Percentage" readOnly />
 
           <Select name="analyses_status" label="Analyses Status" options={[]} />
         </div>

@@ -1,6 +1,6 @@
 'use client'
 
-import { FC, useId } from 'react'
+import { FC, useEffect, useId, useState } from 'react'
 import { Input as UIInput, InputProps } from '../ui/input'
 import { Label } from '../ui/label'
 import clsx from 'clsx'
@@ -32,8 +32,20 @@ export const Input: FC<FormikInputProps> = ({
 }) => {
   const id = useId()
   const [field, meta] = useField(name)
+  const [computedValue, setComputedValue] = useState()
 
-  const { onChange, ...restFieldProps } = field
+  const { onChange, value, ...restFieldProps } = field
+
+  useEffect(() => {
+    let computedValue = value
+
+    if (type === 'number' && Number.isNaN(value) && !Number.isFinite(computedValue)) {
+      computedValue = undefined
+    }
+
+    setComputedValue(computedValue)
+  }, [name, type, value])
+
   return (
     <div className={clsx('mb-2', groupClassName)}>
       {label && (
@@ -49,6 +61,7 @@ export const Input: FC<FormikInputProps> = ({
           className={clsx(fieldClassName, {
             'border-red-500': meta.touched && meta.error
           })}
+          value={computedValue}
           onChange={(e) => {
             if (e.target.value === field.value) return
             onChange(e)

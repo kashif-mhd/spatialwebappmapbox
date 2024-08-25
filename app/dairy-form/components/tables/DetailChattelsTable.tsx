@@ -34,7 +34,7 @@ const formFields: FormField[] = [
     className: 'col-span-3'
   },
   {
-    label: 'Number',
+    label: 'Value',
     name: 'value',
     type: 'number',
     groupClassName: 'grid grid-cols-4 items-center gap-4',

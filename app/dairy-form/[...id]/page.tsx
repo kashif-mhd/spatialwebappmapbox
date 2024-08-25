@@ -1,8 +1,8 @@
-import { redirect } from 'next/navigation'
+import { redirect, useParams } from 'next/navigation'
 import { createClient } from '@/utils/supabase/server'
 
 import Container from '@/components/Container'
-import DataForm from './components/DataForm'
+import DataForm from '../components/DataForm'
 
 export type LocalityData = {
   id: string

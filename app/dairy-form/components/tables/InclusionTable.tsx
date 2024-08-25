@@ -34,13 +34,14 @@ const formFields: FormField[] = [
     className: 'col-span-3'
   },
   {
-    label: 'Number',
+    label: 'Value',
     name: 'value',
     type: 'number',
     groupClassName: 'grid grid-cols-4 items-center gap-4',
     labelClassName: 'text-right',
     className: 'col-span-3',
-    readOnly: true
+    disabled: true,
+    placeholder: 'This field is automatically calculated on submission.'
   },
   {
     label: 'Description',
@@ -51,11 +52,11 @@ const formFields: FormField[] = [
 ]
 
 const inclusionsDataSchema = yup.object().shape({
-  improvement: yup.string().required('Item is required'),
-  unit: yup.number().required('Unit is required'),
-  rate: yup.number().required('Rate is required'),
-  value: yup.number().required('Value is required'),
-  description: yup.string().required('Description is required')
+  improvement: yup.string().required().label('Item'),
+  unit: yup.number().required().label('Unit'),
+  rate: yup.number().required().label('Rate'),
+  value: yup.number().nullable().label('Value'),
+  description: yup.string().required().label('Description')
 })
 
 export const InclusionTable = () => {

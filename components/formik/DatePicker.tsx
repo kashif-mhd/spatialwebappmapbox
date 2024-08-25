@@ -29,6 +29,7 @@ export const DatePicker: FC<FormikDatePickerProps> = ({
 }) => {
   const id = useId()
   const [field, meta, helpers] = useField(name)
+
   return (
     <div className={clsx('mb-2', groupClassName)}>
       {label && (
