@@ -129,11 +129,6 @@ export function FormListTable({ formListData }: FormListTableProps) {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem
-                onClick={() => navigator.clipboard.writeText(property.id)}
-              >
-                Copy ID
-              </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => handleNavigation()}>
                 View Details
