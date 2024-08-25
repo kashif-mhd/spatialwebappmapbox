@@ -1,11 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import {
-  CaretSortIcon,
-  ChevronDownIcon,
-  DotsHorizontalIcon,
-} from "@radix-ui/react-icons"
+import { ChevronDownIcon, DotsHorizontalIcon } from "@radix-ui/react-icons";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -17,10 +12,11 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table"
+} from "@tanstack/react-table";
+import * as React from "react";
 
-import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
+import { SalesBasedInformationData } from "@/app/dairy-form/components/formData";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -29,8 +25,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -38,157 +34,119 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
+import { useRouter } from "next/navigation";
 
-const data: PropertyData[] = [
-  {
-    id: "1",
-    vendorPurchase: "Vendor A",
-    streetNo: "123",
-    address: "Main St",
-    locality: "Locality A",
-    propertyName: "Property A",
-    district: "District A",
-    region: "Region A",
-    distance: "10 km",
-    saleDate: "2023-01-01",
-    rt: "RT123",
-    legalDescription: "Legal Desc A",
-    use: "Residential",
-    relationship: "Owner",
-    totalArea: "1000 sqm",
-    roll: "Roll123",
-    gcv: "GCV123",
-  },
-  // Add more data as needed
-]
+export type FormListTableProps = {
+  formListData: SalesBasedInformationData[];
+};
 
 export type PropertyData = {
-  id: string
-  vendorPurchase: string
-  streetNo: string
-  address: string
-  locality: string
-  propertyName: string
-  district: string
-  region: string
-  distance: string
-  saleDate: string
-  rt: string
-  legalDescription: string
-  use: string
-  relationship: string
-  totalArea: string
-  roll: string
-  gcv: string
-}
+  id: string;
+  vendorPurchase: string;
+  streetNo: string;
+  address: string;
+  locality: string;
+  propertyName: string;
+  district: string;
+  region: string;
+  distance: string;
+  saleDate: string;
+  rt: string;
+  legalDescription: string;
+  use: string;
+  relationship: string;
+  totalArea: string;
+  roll: string;
+  gcv: string;
+};
 
-export const columns: ColumnDef<PropertyData>[] = [
-  {
-    accessorKey: "vendorPurchase",
-    header: "Vendor Purchase",
-  },
-  {
-    accessorKey: "streetNo",
-    header: "Street No",
-  },
-  {
-    accessorKey: "address",
-    header: "Address",
-  },
-  {
-    accessorKey: "locality",
-    header: "Locality",
-  },
-  {
-    accessorKey: "propertyName",
-    header: "Property Name",
-  },
-  {
-    accessorKey: "district",
-    header: "District",
-  },
-  {
-    accessorKey: "region",
-    header: "Region",
-  },
-  {
-    accessorKey: "distance",
-    header: "Distance",
-  },
-  {
-    accessorKey: "saleDate",
-    header: "Sale Date",
-  },
-  {
-    accessorKey: "rt",
-    header: "RT",
-  },
-  {
-    accessorKey: "legalDescription",
-    header: "Legal Description",
-  },
-  {
-    accessorKey: "use",
-    header: "Use",
-  },
-  {
-    accessorKey: "relationship",
-    header: "Relationship",
-  },
-  {
-    accessorKey: "totalArea",
-    header: "Total Area",
-  },
-  {
-    accessorKey: "roll",
-    header: "Roll",
-  },
-  {
-    accessorKey: "gcv",
-    header: "GCV",
-  },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const property = row.original
+export function FormListTable({ formListData }: FormListTableProps) {
+  const router = useRouter();
 
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <DotsHorizontalIcon className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(property.id)}
-            >
-              Copy ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View Details</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
-    },
-  },
-]
-
-export function FormListTable() {
-  const [sorting, setSorting] = React.useState<SortingState>([])
+  const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
-  )
+  );
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = React.useState({})
+    React.useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = React.useState({});
+
+  const columns: ColumnDef<SalesBasedInformationData>[] = [
+    {
+      accessorKey: "id",
+      header: "ID",
+    },
+    {
+      accessorKey: "strvendorpurchaser",
+      header: "Vendor Purchase",
+    },
+    {
+      accessorKey: "straddress",
+      header: "Address",
+    },
+    {
+      accessorKey: "locality",
+      header: "Locality",
+    },
+    {
+      accessorKey: "district",
+      header: "District",
+    },
+    {
+      accessorKey: "region",
+      header: "Region",
+    },
+    {
+      accessorKey: "strpropertyname",
+      header: "Property Name",
+    },
+    {
+      accessorKey: "dtmsaledate",
+      header: "Sale Date",
+      cell: ({ row }) => {
+        const saleDate = new Date(row.original.dtmsaledate);
+        return saleDate.toLocaleDateString();
+      },
+    },
+    {
+      accessorKey: "lngtotalarea",
+      header: "Total Area",
+    },
+    {
+      id: "actions",
+      enableHiding: false,
+      cell: ({ row }) => {
+        const property = row.original;
+
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <DotsHorizontalIcon className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuItem
+                onClick={() => navigator.clipboard.writeText(property.id)}
+              >
+                Copy ID
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => handleNavigation()}>
+                View Details
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
+  ];
 
   const table = useReactTable({
-    data,
+    data: formListData,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -204,7 +162,11 @@ export function FormListTable() {
       columnVisibility,
       rowSelection,
     },
-  })
+  });
+
+  const handleNavigation = () => {
+    router.push(`/dairy-form/${formListData[0].id}`);
+  };
 
   return (
     <div className="w-full">
@@ -239,7 +201,7 @@ export function FormListTable() {
                   >
                     {column.id}
                   </DropdownMenuCheckboxItem>
-                )
+                );
               })}
           </DropdownMenuContent>
         </DropdownMenu>
@@ -259,7 +221,7 @@ export function FormListTable() {
                             header.getContext()
                           )}
                     </TableHead>
-                  )
+                  );
                 })}
               </TableRow>
             ))}
@@ -319,5 +281,5 @@ export function FormListTable() {
         </div>
       </div>
     </div>
-  )
+  );
 }
