@@ -71,7 +71,7 @@ export const Combobox: FC<ComboboxProps> = ({
       </PopoverTrigger>
       <PopoverContent className="w-full p-0">
         <Command>
-          <CommandList>
+          <CommandList className='max-h-[250px] overflow-y-auto'>
             <CommandInput placeholder={searchPlaceholder} className="h-9" />
             <CommandEmpty>{noResultsText}</CommandEmpty>
             <CommandGroup>
