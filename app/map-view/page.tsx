@@ -6,7 +6,8 @@ import BespokeLandAreaModal from '@/components/prompt-boxes/bespoke-land-area-mo
 import UserLandBreakdownModal from '@/components/prompt-boxes/user-land-breakdown-modal';
 import * as _ from "lodash";
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
-import { createClient, createTestClient } from '@/utils/supabase/client'
+import { createClient } from '@/utils/supabase/client'
+import * as maputils from '@/utils/maputils/maputils-main';
 // import {ScissorsIcon} from '@heroicons/react/outline'
 import { BeakerIcon } from '@heroicons/react/solid'
 import * as turf from '@turf/turf';
@@ -139,7 +140,6 @@ function randomString() {
 const getVisibilityValue = (idval) => {
   return idval == true ? 'visible' : 'none';
 }
-const supabaseTest = createTestClient();
 const supabase = createClient();
 
 
@@ -173,9 +173,7 @@ const MapboxPage = () => {
   const [sourceLoaded, setSourceLoaded] = useState(false);
   const [proploaded, setProploaded] = useState(false);
   const [features, setFeatures] = useState();
-  // const [selectedFeature, setSelectedFeature] = useState(null);
   const selectedFeature = useRef(null);
-  // const [selectedFeatureLayer, setSelectedFeatureLayer] = useState(null);
   const selectedFeatureLayer = useRef('');
   const [activeLayer, setActiveLayer] = useState('layer-1');
   const [isSelectMode, setIsSelectMode] = useState(false);
@@ -185,7 +183,9 @@ const MapboxPage = () => {
   const isSelectionMode = useRef(false);
   const mbdraw = useRef(null)
   const originalAreas = useRef({values: {}})
+  const userSlopeClasses = useRef({values: {}})
   const saveLegalLayertodb = useRef()
+  const landCoverAnalysisFormFields = useRef({landClasses: {}, totalArea: 0.0})
   const [sourceLayer, setSourceLayer] = useState(true);
   const [improvementsLayer, setImprovementsLayer] = useState(true);
   const [landBreakdownLayer, setLandBreakdownLayer] = useState(true);
@@ -215,48 +215,50 @@ const MapboxPage = () => {
     // if (!mapRef.current){
       mapRef.current = new mapboxgl.Map({
         container: mapContainerRef.current,
-        // style: 'mapbox://styles/mapbox/satellite-v9',
+        style: 'mapbox://styles/mapbox/satellite-v9',
         // center: [-91.874, 42.76],
         center: [175.31, -37.39],
         zoom: 8
       });
 
 
-    const fetchSlopeGeometry = async () => {
-      const { data, error } = await supabaseTest.from('bespokeslopesample').select('wkb_geometry')
-      if(data){
-        // console.log("Geometry: ", data)
-        // slopeGeom.current = data;
-        return data;
-      }
-      else if(error) {
-        return error;
-      }
-    }
-    const fetchLandcoverGeometry = async () => {
-      const { data, error } = await supabaseTest.from('bespokelandcoversample').select('wkb_geometry')
-      if(data){
-        // console.log("Geometry: ", data)
-        // slopeGeom.current = data;
-        return data;
-      }
-      else if(error) {
-        return error;
-      }
-    }
+    // const fetchSlopeGeometry = async () => {
+    //   const { data, error } = await supabase.from('bespokeslopesample').select('wkb_geometry')
+    //   if(data){
+    //     // console.log("Geometry: ", data)
+    //     // slopeGeom.current = data;
+    //     return data;
+    //   }
+    //   else if(error) {
+    //     return error;
+    //   }
+    // }
+    // const fetchLandcoverGeometry = async () => {
+    //   const { data, error } = await supabase.from('bespokelandcoversample').select('wkb_geometry')
+    //   if(data){
+    //     // console.log("Geometry: ", data)
+    //     // slopeGeom.current = data;
+    //     return data;
+    //   }
+    //   else if(error) {
+    //     return error;
+    //   }
+    // }
+    // const fetchSlopeClasses = async () => {
+    //   console.log("Connection details: ", JSON.stringify(supabase))
+    //   console.log("Connection2 details: ", JSON.stringify(supabase))
+    //   const { data, error } = await supabase.from('list_pastoral_land_classes').select()
+    //   if(data){
+    //     // console.log("Geometry: ", data)
+    //     // slopeGeom.current = data;
+    //     return data;
+    //   }
+    //   else if(error) {
+    //     return error;
+    //   }
+    // }
 
-    const fetchLandCoverAnalysis = async () => {
-      const {data, error} = await supabaseTest.rpc('land_cover_analysis_v15', {})
-      if(data) {
-        console.log("Analysis Results: ", data)
-        return data;
-      }
-
-      else if(error) {
-        console.log("Error returned: ", error)
-        return error;
-      }
-    }
+    
 
     saveLegalLayertodb.current = (data) => {
       // const 
@@ -381,10 +383,15 @@ const MapboxPage = () => {
       // },
       // firstSymbolId // Insert the layer beneath the first symbol layer.
       // );
+      maputils.fetchSlopeClasses().then((data) => {
+        console.log("Classes Fetch: ", data)
+      })
       try{
+
         
-        fetchLandcoverGeometry().then((data) => {
+        maputils.fetchLandcoverGeometry().then((data) => {
           // console.log("Geometry is fetched: ", data)
+          data = data.data
           if(data.length > 0){
             let geojsondata = {
               "type": "FeatureCollection",
@@ -436,31 +443,32 @@ const MapboxPage = () => {
 
           }
         })
-        fetchLandCoverAnalysis().then((data) => {
-          console.log("Data from call: ", data)
+        // fetchLandCoverAnalysis().then((data) => {
+        //   console.log("Data from call: ", data)
 
-          let geojsondata = {
-            "type": "FeatureCollection",
-            "features": data.map(feature => ({
-              type: "Feature",
-              geometry: feature.geom,  // Assuming 'geom' is already in GeoJSON format
-              properties: {
-                  class_name: feature.class_name,
-                  slope_area: feature.slope_area
-              }
-            })),
-            "totalFeatures": data?.length,
-            "numberReturned": data?.length,
+        //   let geojsondata = {
+        //     "type": "FeatureCollection",
+        //     "features": data.map(feature => ({
+        //       type: "Feature",
+        //       geometry: feature.geom,  // Assuming 'geom' is already in GeoJSON format
+        //       properties: {
+        //           class_name: feature.class_name,
+        //           slope_area: feature.slope_area
+        //       }
+        //     })),
+        //     "totalFeatures": data?.length,
+        //     "numberReturned": data?.length,
             
-          }
+        //   }
 
-          if (mapRef.current.getSource('land-cover-analysis')) {
-            mapRef.current.getSource('land-cover-analysis').setData(geojsondata);
-          }
+        //   if (mapRef.current.getSource('land-cover-analysis')) {
+        //     mapRef.current.getSource('land-cover-analysis').setData(geojsondata);
+        //   }
           
-        })
-        fetchSlopeGeometry().then((data) => {
+        // })
+        maputils.fetchSlopeGeometry().then((data) => {
           // console.log("Geometry is fetched: ", data)
+          data = data.data
           if(data.length > 0){
             let geojsondata = {
               "type": "FeatureCollection",
@@ -1360,7 +1368,7 @@ const MapboxPage = () => {
       
     }
     console.log("Here to save: ", geojsondata)
-    supabaseTest.from('sales_based_information').insert({spatialdatafield: turf.rewind(geojsondata)}).then((data) => {
+    maputils.saveToSalesTable(turf.rewind(geojsondata)).then((data) => {
       if(data){
         console.log("Data: ", data)
       }
@@ -1386,7 +1394,7 @@ const MapboxPage = () => {
     console.log("Here to save: ", geojsondata)
     // geojsondata = mapCoordinates(geojsondata)
     // console.log("Here to save2: ", geojsondata)
-    supabaseTest.from('sales_based_information').insert({spatialdatafield: turf.rewind(geojsondata)}).then((data, error) => {
+    maputils.saveToSalesTable(turf.rewind(geojsondata)).then((data) => {
       if(data){
         console.log("Data: ", data)
       }
@@ -1531,8 +1539,8 @@ const MapboxPage = () => {
     });
   }
 
-  const bespokeLandAreaSubmit = () => {
-    supabaseTest.rpc('land_cover_analysis_v15', {}).then((data) => {
+  const bespokeLandProcesses = () => {
+    maputils.fetchLandCoverAnalysis().then((data) => {
       console.log("Data fetched: ", data)
 
       let geojsondata = {
@@ -1560,17 +1568,76 @@ const MapboxPage = () => {
 
         console.log("landClasses: ", landClasses)
 
-        setShowBespokeLandAreaModal(true)
         // Populate the modal with dynamic rows based on the land classes
-        populateLandAreaForm(landClasses, features);
+        // populateLandAreaForm(landClasses, features);
+        populateAnalysisForm(landClasses, features);
 
         
       }
 
     })
+  }
+
+  const populateAnalysisForm = (landClasses, features) => {
+    landCoverAnalysisFormFields.current = {landClasses: {}, totalArea: 0.0}
+    landClasses.forEach((landClass) => {
+      landCoverAnalysisFormFields.current.landClasses[landClass] = 0.0
+      features.forEach((feature) => {
+        if (feature.properties.class_name === landClass) {
+          const area = turf.area(feature) / 10000; // Convert square meters to hectares
+          landCoverAnalysisFormFields.current.landClasses[landClass] += area;
+          landCoverAnalysisFormFields.current.totalArea += area;
+        }
+      })
+    })
+  }
+
+  const bespokeLandAreaSubmit = () => {
+    setShowBespokeLandAreaModal(true)
+    
     
     // setShowBespokeLandAreaModal(true)
   }
+  // const bespokeLandAreaSubmit = () => {
+  //   supabase.rpc('land_cover_analysis_v15', {}).then((data) => {
+  //     console.log("Data fetched: ", data)
+
+  //     let geojsondata = {
+  //       "type": "FeatureCollection",
+  //       "features": data.data.map(feature => ({
+  //         type: "Feature",
+  //         geometry: feature.geom,  // Assuming 'geom' is already in GeoJSON format
+  //         properties: {
+  //             class_name: feature.class_name,
+  //             slope_area: feature.slope_area
+  //         }
+  //       })),
+  //       "totalFeatures": data?.length,
+  //       "numberReturned": data?.length,
+        
+  //     }
+
+  //     if (mapRef.current.getSource('land-cover-analysis')) {
+  //       mapRef.current.getSource('land-cover-analysis').setData(geojsondata);
+        
+  //       const features = mapRef.current.getSource('land-cover-analysis')._data ? mapRef.current.getSource('land-cover-analysis')._data.features : [];
+
+  //       // Get unique land classes from the features
+  //       const landClasses = getUniqueLandClasses(features);
+
+  //       console.log("landClasses: ", landClasses)
+
+  //       setShowBespokeLandAreaModal(true)
+  //       // Populate the modal with dynamic rows based on the land classes
+  //       populateLandAreaForm(landClasses, features);
+
+        
+  //     }
+
+  //   })
+    
+  //   // setShowBespokeLandAreaModal(true)
+  // }
   const userLandBreakdownSubmit = () => {
     setShowLandAreaModal(true)
   }
@@ -1583,10 +1650,10 @@ const MapboxPage = () => {
           {/* <p>Layers: {mapRef.current.lay}</p> */}
           <div id="sidebar">
               <h2>Layers</h2>
-              <div onClick={() => {activateLayer('layer-1')}} id="layer1" className={'layer-item p-[5px] mx-[5px] rounded-[5px] cursor-pointer ' + ((activeLayer == "layer-1") ? "bg-cyan-300" : "bg-grey-300")}>
+              {/* <div onClick={() => {activateLayer('layer-1')}} id="layer1" className={'layer-item p-[5px] mx-[5px] rounded-[5px] cursor-pointer ' + ((activeLayer == "layer-1") ? "bg-cyan-300" : "bg-grey-300")}>
                   <input type="checkbox" id="toggleLayer1" checked={sourceLayer} onChange={onChangeSourceLayer} />
                   <label htmlFor="toggleLayer1">Layer 1: Source Layer 1</label>
-              </div>
+              </div> */}
               <div onClick={() => {activateLayer('db-improvements')}} id="improvements-layer" className={'layer-item p-[5px] mx-[5px] rounded-[5px] cursor-pointer ' + ((activeLayer == "db-improvements") ? "bg-cyan-300" : "bg-grey-300")}>
                   <input type="checkbox" id="toggle-improvements-layer" checked={improvementsLayer} onChange={onChangeImprovementsLayer} />
                   <label htmlFor="toggle-improvements-layer">Improvements Layer</label>
@@ -1625,6 +1692,7 @@ const MapboxPage = () => {
               <button id="save-land-area" onClick={landAreaSubmit}>User Land Area Submit</button>
               <button id="save-user-land-breakdown" onClick={userLandBreakdownSubmit}>User Land Breakdown Submit</button>
               <button id="save-user-land-breakdown" onClick={bespokeLandAreaSubmit}>Bespoke Land Area Submit</button>
+              <button id="save-user-land-breakdown" onClick={bespokeLandProcesses}>Bespoke Land Processes</button>
           </div>
 
         </div>
@@ -1632,7 +1700,7 @@ const MapboxPage = () => {
           <>
             <div ref={mapContainerRef} id="map" style={{ height: '500px' }}></div>
             <div
-              className="calculation-box"
+              className="calculation-box hidden"
               style={{
                 // height: 75,
                 width: 150,
@@ -1668,7 +1736,8 @@ const MapboxPage = () => {
         </div>
       </div>
       {showLandAreaModal && <LandAreaModal />}
-      {showBespokeLandAreaModal && <BespokeLandAreaModal />}
+
+      <BespokeLandAreaModal  showModal={showBespokeLandAreaModal}/>
       {showLandAreaModal && <LandAreaModal />}
       
     </>

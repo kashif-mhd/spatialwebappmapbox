@@ -1,9 +1,10 @@
 
-const BespokeLandAreaModal = () => {
+const BespokeLandAreaModal = (props) => {
+  console.log("Props: ", props)
   return (
     <>
       <div className="modal">
-        <div id="bespokeLandAreaModal" className={'fixed top-1/2 left-1/2 translate-[-50%] bg-white p-[20px] round-[8px] w-[400px]'}>
+        <div id="bespokeLandAreaModal" className={`fixed top-[200px] left-1/2 translate-[-50%] bg-white p-[20px] round-[8px] w-[400px] ${props.showModal ? "" : "hidden"}`}>
           <h3>Bespoke Land Area</h3>
           <div id="bespokeLandAreaForm">
               
