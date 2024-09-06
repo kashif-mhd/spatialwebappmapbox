@@ -9,7 +9,7 @@ import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import { createClient } from '@/utils/supabase/client'
 import * as maputils from '@/utils/maputils/maputils-main';
 // import {ScissorsIcon} from '@heroicons/react/outline'
-import { BeakerIcon } from '@heroicons/react/solid'
+import { BeakerIcon } from '@heroicons/react/24/solid'
 import * as turf from '@turf/turf';
 import defaultDrawStyle from "../../lib/theme";
 import mapCoordinates from 'geojson-apply-right-hand-rule'
