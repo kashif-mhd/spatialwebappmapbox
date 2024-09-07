@@ -24,9 +24,9 @@ import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 //   drawStyles as splitPolygonDrawStyles,
 // } from "mapbox-gl-draw-split-polygon-mode";
 
-import SplitPolygonMode, {
-  drawStyles as splitPolygonDrawStyles,
-} from "mapbox-split-polygon-mode";
+// import SplitPolygonMode, {
+//   drawStyles as splitPolygonDrawStyles,
+// } from "mapbox-split-polygon-mode";
 
 import {
   SnapPolygonMode,
@@ -279,10 +279,10 @@ const MapboxPage = () => {
       // modes: {
       //   ...SplitPolygonMode(MapboxDraw.modes),
       // },
-      styles: [...splitPolygonDrawStyles(defaultDrawStyle),],
+      // styles: [...splitPolygonDrawStyles(defaultDrawStyle),],
       modes: {
         ...MapboxDraw.modes,
-        ...SplitPolygonMode(MapboxDraw.modes),
+        // ...SplitPolygonMode(MapboxDraw.modes),
         // Object.assign( {
         draw_point: SnapPointMode,
         draw_polygon: SnapPolygonMode,
@@ -834,19 +834,21 @@ const MapboxPage = () => {
     
     const drawBar = new extendDrawBar({
       draw: draw,
-      buttons: [{
-        on: 'click',
-        action: (() => {draw.changeMode("split_polygon")}),
-        classes: ['text-black', 'border-black', 'text-opacity-50'],
-        // content: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="#fff">
-        // <path fill-rule="evenodd" d="M5.5 2a3.5 3.5 0 101.665 6.58L8.585 10l-1.42 1.42a3.5 3.5 0 101.414 1.414l8.128-8.127a1 1 0 00-1.414-1.414L10 8.586l-1.42-1.42A3.5 3.5 0 005.5 2zM4 5.5a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zm0 9a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z" clip-rule="evenodd" />
-        // <path d="M12.828 11.414a1 1 0 00-1.414 1.414l3.879 3.88a1 1 0 001.414-1.415l-3.879-3.879z" />
-        // content: <BeakerIcon className="h-5 w-5 text-blue-500"/>
-        content: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black">
-        <path fill-rule="evenodd" d="M12 1.586l-4 4v12.828l4-4V1.586zM3.707 3.293A1 1 0 002 4v10a1 1 0 00.293.707L6 18.414V5.586L3.707 3.293zM17.707 5.293L14 1.586v12.828l2.293 2.293A1 1 0 0018 16V6a1 1 0 00-.293-.707z" clip-rule="evenodd" />
-      </svg>`
+      buttons: [
+      //   {
+      //   on: 'click',
+      //   action: (() => {draw.changeMode("split_polygon")}),
+      //   classes: ['text-black', 'border-black', 'text-opacity-50'],
+      //   // content: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="#fff">
+      //   // <path fill-rule="evenodd" d="M5.5 2a3.5 3.5 0 101.665 6.58L8.585 10l-1.42 1.42a3.5 3.5 0 101.414 1.414l8.128-8.127a1 1 0 00-1.414-1.414L10 8.586l-1.42-1.42A3.5 3.5 0 005.5 2zM4 5.5a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zm0 9a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z" clip-rule="evenodd" />
+      //   // <path d="M12.828 11.414a1 1 0 00-1.414 1.414l3.879 3.88a1 1 0 001.414-1.415l-3.879-3.879z" />
+      //   // content: <BeakerIcon className="h-5 w-5 text-blue-500"/>
+      //   content: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black">
+      //   <path fill-rule="evenodd" d="M12 1.586l-4 4v12.828l4-4V1.586zM3.707 3.293A1 1 0 002 4v10a1 1 0 00.293.707L6 18.414V5.586L3.707 3.293zM17.707 5.293L14 1.586v12.828l2.293 2.293A1 1 0 0018 16V6a1 1 0 00-.293-.707z" clip-rule="evenodd" />
       // </svg>`
-      }, {
+      // // </svg>`
+      // }, 
+      {
         on: 'click',
         action: (() => {draw.changeMode("draw_polygon")}),
         classes: ['text-black', 'border-black', 'text-opacity-50'],
