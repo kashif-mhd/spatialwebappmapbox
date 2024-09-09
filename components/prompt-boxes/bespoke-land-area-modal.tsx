@@ -1,5 +1,5 @@
 
-const BespokeLandAreaModal = (props) => {
+const BespokeLandAreaModal = (props: any) => {
   console.log("Props: ", props)
   return (
     <>

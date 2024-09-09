@@ -3,7 +3,6 @@ import { createClient } from "../supabase/client";
 const supabase = createClient();
 
 export const fetchSlopeClasses = async () => {
-  console.log("Connection details: ", JSON.stringify(supabase))
   return await supabase.from('list_pastoral_land_classes').select()
   
 }

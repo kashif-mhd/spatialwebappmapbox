@@ -26,7 +26,7 @@ export type DataFormProps = {
 }
 
 const DataForm: FC<DataFormProps> = ({ localityData, listValuersData }) => {
-  const { id } = useParams()
+  const { id }: any = useParams()
   const { toast } = useToast()
   const [initialValues, setInitialValues] = useState<FieldsType>()
 
