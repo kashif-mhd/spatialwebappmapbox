@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useRef, useState } from 'react';
-import mapboxgl, { GeoJSONFeature } from 'mapbox-gl';
+import mapboxgl from 'mapbox-gl';
 import LandAreaModal from '@/components/prompt-boxes/land-area-modal';
 import BespokeLandAreaModal from '@/components/prompt-boxes/bespoke-land-area-modal';
 import UserLandBreakdownModal from '@/components/prompt-boxes/user-land-breakdown-modal';
@@ -147,7 +147,7 @@ const supabase = createClient();
 
 const  getUniqueLandClasses = (features: any) => {
   const landClassesSet = new Set();
-
+  if(features)
   features.forEach((feature: any) => {
       const landClass = feature.properties.class_name;
       if (landClass) {
@@ -164,11 +164,13 @@ const  getUniqueLandClasses = (features: any) => {
 const MapboxPage = () => {
 
   
-
   
   // console.log("Page is loading");
-  const mapContainerRef = useRef<any>();
+  const mapContainerRef = useRef<HTMLDivElement>(null);
+  const editableLayers = ["legal-boundary", "user-slope"]
+  // let mapContainer: string | HTMLElement  = document.createElement('div');
   const mapRef = useRef<mapboxgl.Map | undefined>();
+  let map: mapboxgl.Map;
   let clipb:any;
   const [roundedArea, setRoundedArea] = useState();
   const [mapLoaded, setMapLoaded] = useState(false);
@@ -176,9 +178,10 @@ const MapboxPage = () => {
   const [proploaded, setProploaded] = useState(false);
   const [features, setFeatures] = useState();
   // const selectedFeature = useRef<>(null);
-  let selectedFeature: mapboxgl.GeoJSONFeature;
+  let selectedFeature: GeoJSON.Feature;
   const selectedFeatureLayer = useRef('');
-  const [activeLayer, setActiveLayer] = useState('layer-1');
+  const [activeLayer, setActiveLayer] = useState<string>();
+  let theActiveLayer: string = "";
   const [isSelectMode, setIsSelectMode] = useState(false);
   const [showLandAreaModal, setShowLandAreaModal] = useState(false);
   const [showUserLandBreakdownModal, setShowUserLandBreakdownModal] = useState(false);
@@ -199,8 +202,17 @@ const MapboxPage = () => {
   const [propertyLayer, setPropertyLayer] = useState(true);
   const [landcoverLayer, setLandcoverLayer] = useState(true);
   const [slopeLayer, setSlopeLayer] = useState(true);
+  const [userSlopeLayer, setUserSlopeLayer] = useState(true);
   // const slopeGeom = useRef({ wkb_geometry: any; }[]: []);
   const [intersectionLayer, setIntersectionLayer] = useState(true);
+  let user: any;
+
+
+  supabase.auth.getUser().then((data) => {
+    console.log("User: ", data?.data?.user)
+    user = data?.data?.user
+  })
+
   
 
   // useEffect(() => {
@@ -472,6 +484,23 @@ const MapboxPage = () => {
         //   }
           
         // })
+
+        mapRef.current.addSource('user-slope', {
+          type: 'geojson',
+          data: [] as any
+        });
+
+        // Add Layer 1
+        mapRef.current.addLayer({
+            id: 'user-slope',
+            type: 'fill',
+            source: 'user-slope',
+            paint: {
+                'fill-color': '#00ffaa',
+                'fill-opacity': 0.3
+            }
+        });
+
         let sftrs:any[] = [] 
         maputils.fetchSlopeGeometry().then((data) => {
           // console.log("Geometry is fetched: ", data)
@@ -711,6 +740,9 @@ const MapboxPage = () => {
                 const featuresSlopeLayer = mapRef.current.queryRenderedFeatures(bbox, {
                     layers: ['db-slope']
                 });
+                const userSlopeLayer = mapRef.current.queryRenderedFeatures(bbox, {
+                    layers: ['user-slope']
+                });
 
                 console.log("Features Layer 1: ", featuresLayer1)
                 console.log("Features Layer 2: ", featuresLayer2)
@@ -744,6 +776,11 @@ const MapboxPage = () => {
                   selectedFeatureLayer.current = 'db-slope'
                   console.log('Selected feature from Slope Layer:', selectedFeature);
                   
+                } else if (userSlopeLayer.length) {
+                  selectedFeature = userSlopeLayer[0];
+                  selectedFeatureLayer.current = 'user-slope'
+                  console.log('Selected feature from User Slope Layer:', selectedFeature);
+                  
                 } else if (featuresLayer3.length) {
                   selectedFeature = featuresLayer3[0];
                   selectedFeatureLayer.current = 'nz-property'
@@ -770,6 +807,21 @@ const MapboxPage = () => {
         // console.error(ex)
       }
     });
+
+    mapRef.current.on('draw.create', function(event) {  
+      // Handle the completed drawing here  
+      console.log('Polygon drawn:', event.features);
+      console.log('Active Layer:', activeLayer);
+      console.log('Editable Layers:', editableLayers);
+      if(true){//activeLayer && editableLayers.indexOf(activeLayer) >= 0){
+        let feature = event.features[0];
+        feature.properties.layer = activeLayer;
+        console.log("Feature: ", feature)
+        // pasteFeatureIntoLayer(feature, activeLayer)
+        pasteFeatureIntoLayer(feature, "legal-boundary")
+        draw.delete(JSON.stringify(feature.id))
+      }
+    });  
 
     const highlightFeature = (feature: any) => {
       if(mapRef.current){
@@ -803,9 +855,11 @@ const MapboxPage = () => {
         console.log('No feature to paste.');
       }
     }
-    const pasteFeatureIntoLayer = (feature: mapboxgl.GeoJSONFeature, targetLayerId: string) =>{
+    const pasteFeatureIntoLayer = (feature: GeoJSON.Feature, targetLayerId: string) =>{
       if(mapRef.current){
-        const targetSource = mapRef.current.getSource(targetLayerId) as mapboxgl.GeoJSONSource;
+        const targetSource = mapRef.current.getSource(targetLayerId) as any;
+        console.log("The target source: ", targetSource)
+        console.log("Feature: ", feature)
         const targetData = targetSource._data as GeoJSON.FeatureCollection;
   
         // Remove the existing IDs to prevent conflicts
@@ -847,9 +901,9 @@ const MapboxPage = () => {
       }
     }
 
-    const deleteFeatureFromLayer = (feature: mapboxgl.GeoJSONFeature, layerId: string) => {
+    const deleteFeatureFromLayer = (feature: GeoJSON.Feature, layerId: string) => {
       if(mapRef.current){
-        const source = mapRef.current.getSource(layerId) as mapboxgl.GeoJSONSource;
+        const source = mapRef.current.getSource(layerId) as any;
         const data= source._data as GeoJSON.FeatureCollection;
   
         // Filter out the feature to delete
@@ -1229,6 +1283,13 @@ const MapboxPage = () => {
           mapRef.current.setLayoutProperty(layerId, 'visibility', 'none')
         }
         setSlopeLayer(!slopeLayer)
+      }else if(layerId == "user-slope"){
+        if(userSlopeLayer != true){
+          mapRef.current.setLayoutProperty(layerId, 'visibility', 'visible')
+        }else{
+          mapRef.current.setLayoutProperty(layerId, 'visibility', 'none')
+        }
+        setUserSlopeLayer(!userSlopeLayer)
       }
     }
 
@@ -1249,6 +1310,14 @@ const MapboxPage = () => {
     // mapRef.current.setLayoutProperty('layer-1', 'visibility', {propertyLayer} ? 'visible' : 'none');
   }
 
+  useEffect(() => { setActiveLayer(theActiveLayer) }, [theActiveLayer])
+
+  const activateLayer2 = (layerId: string) => {
+    console.log("Layer ID to activate: ", layerId)
+    theActiveLayer = layerId;
+    
+  }
+  
   const activateLayer = (layerId: string) => {
     // console.log("Layer ID to activate: ", layerId)
     setActiveLayer(layerId);
@@ -1274,6 +1343,9 @@ const MapboxPage = () => {
   }
   const onChangeSlopeLayer = () => {
     toggleLayer('db-slope');
+  }
+  const onChangeUserSlopeLayer = () => {
+    toggleLayer('user-slope');
   }
   const onChangeLegalLayer = () => {
     toggleLayer('legal-boundary');
@@ -1331,7 +1403,7 @@ const MapboxPage = () => {
     // targetSource.setData(targetData);
     // mbdraw.current.add(newFeature)
     if(mapRef.current){
-      const targetSource = mapRef.current.getSource('legal-boundary') as mapboxgl.GeoJSONSource;
+      const targetSource = mapRef.current.getSource('legal-boundary') as any;
       const targetData = targetSource._data as GeoJSON.FeatureCollection;
       targetData.features.push(newFeature);
       targetSource.setData(targetData)
@@ -1358,7 +1430,7 @@ const MapboxPage = () => {
     // const layer2Features = mapRef.current.getSource('legal-boundary')._data.features;
     if(mapRef.current){
 
-      const layer1Features = mapRef.current.queryRenderedFeatures({layers: ['nz-property']});;
+      const layer1Features = mapRef.current.queryRenderedFeatures(undefined, {layers: ['nz-property']});;
       // const layer2Features = mapRef.current.getSource('legal-boundary')._data.features;
       const layer2Features = mbdraw.getAll().features;
       console.log("SL: ", layer2Features)
@@ -1401,26 +1473,37 @@ const MapboxPage = () => {
   const saveToSalesTable = () => {
     if(mapRef.current){
 
-      const legalSource = mapRef.current.getSource('legal-boundary') as mapboxgl.GeoJSONSource;
+      const legalSource = mapRef.current.getSource('legal-boundary') as any;
       const legaldata = legalSource._data as GeoJSON.FeatureCollection;
       let rewindfeatures: any[] = []
+      // maputils.fetchSalesInfo().then((data) => {
+      //   console.log("Sales Data: ", data)
+      // })
       legaldata.features.forEach((feature, index) => {
         // mbdraw.current.add(feature)
-        rewindfeatures.push({type: feature.type, geometry: turf.rewind(feature.geometry), properties: {}})
+        // rewindfeatures.push({type: feature.type, geometry: turf.rewind(feature.geometry), properties: feature.properties || {}})
+        let geojsondata = turf.rewind(feature.geometry);
+        console.log("GeoJSON: ", geojsondata)
+        maputils.saveToSalesTable({spatialdatafield: geojsondata, organization_id: user?.user_metadata?.organization_id}).then((data) => {
+          if(data){
+            console.log("Data: ", data)
+          }
+          
+        })
       })
-      let geojsondata = {
-        "type": "FeatureCollection",
-        "features": rewindfeatures,
+      // let geojsondata = {
+      //   "type": "FeatureCollection",
+      //   "features": rewindfeatures,
         
         
-      } as GeoJSON.GeoJSON;
-      console.log("Here to save: ", geojsondata)
-      maputils.saveToSalesTable(turf.rewind(geojsondata)).then((data) => {
-        if(data){
-          console.log("Data: ", data)
-        }
+      // } as GeoJSON.GeoJSON;
+      // console.log("Here to save: ", geojsondata)
+      // maputils.saveToSalesTable(turf.rewind(geojsondata)).then((data) => {
+      //   if(data){
+      //     console.log("Data: ", data)
+      //   }
         
-      })
+      // })
     }
     
   }
@@ -1452,7 +1535,7 @@ const MapboxPage = () => {
 
   const deleteFeatureFromLayer = (feature: any, layerId: string) => {
     if(mapRef.current){
-      const source = mapRef.current.getSource(layerId) as mapboxgl.GeoJSONSource;;
+      const source = mapRef.current.getSource(layerId) as any;
       const data = source._data as GeoJSON.FeatureCollection;
 
       // Filter out the feature to delete
@@ -1484,6 +1567,47 @@ const MapboxPage = () => {
     }
 
   }
+
+  useEffect(() => {
+    let bespokeTotalEl = document.getElementById('bespokeSubTotal') as HTMLInputElement;
+    let bespokeTotalAreaEl = document.getElementById('bespokeTotalArea') as HTMLInputElement;
+    let proRataButtonEl = document.getElementById('bespokeProRataButton') as HTMLButtonElement;
+    const handleProRata = (event) => {
+      // Get the values of subtotal and total area
+      const subTotal = parseFloat(bespokeTotalEl.value) || 0;
+      const totalArea = parseFloat(bespokeTotalAreaEl.value) || 0;
+
+      // Check that both values are greater than zero
+      if (subTotal > 0 && totalArea > 0) {
+          // Calculate the adjustment factor
+          const adjustmentFactor = totalArea / subTotal;
+
+          // Get all the area input fields
+          const areaInputs = document.querySelectorAll('#bespokeLandAreaForm input[type="number"]:not([readonly])') as NodeListOf<HTMLInputElement>;
+
+          // Store the original areas before applying Pro Rata
+          originalAreas.current = {values: {}};  // Clear previous values
+          areaInputs.forEach(input => {
+              originalAreas.current.values[input.id] = parseFloat(input.value) || 0;
+          });
+
+          // Iterate over each area input to adjust its value
+          areaInputs.forEach(input => {
+              const originalArea = originalAreas.current.values[input.id];
+              const newArea = originalArea * adjustmentFactor;
+              input.value = newArea.toFixed(2); // Update the input value with the new area
+          });
+
+          // Update the subtotal to match the total area after pro rata adjustment
+          bespokeTotalEl.value = totalArea.toFixed(2);
+      } else {
+          alert('Please ensure that both the subtotal and total area are greater than 0.');
+      }
+    }
+    
+
+    proRataButtonEl.addEventListener('click', handleProRata );
+  })
 
   const populateLandAreaForm = (landClasses: any[], features: any[]) => {
     const formContainer = document.getElementById('bespokeLandAreaForm');
@@ -1541,6 +1665,128 @@ const MapboxPage = () => {
     let proRataButtonEl = document.getElementById('bespokeProRataButton') as HTMLButtonElement;
     bespokeTotalEl.value = subTotal.toFixed(2);
     
+    
+    let undoButton = document.getElementById('bespokeUndoButton') as HTMLButtonElement;
+    undoButton.addEventListener('click', function() {
+      // Check if originalAreas has been populated
+      if (Object.keys(originalAreas.current.values).length === 0) {
+          alert('No changes to undo.');
+          return;
+      }
+
+      // Get all the area input fields
+      const areaInputs = document.querySelectorAll('#bespokeLandAreaForm input[type="number"]:not([readonly])') as NodeListOf<HTMLInputElement>;
+
+      // Iterate over each area input to restore its original value
+      areaInputs.forEach(input => {
+          if (originalAreas.current.values.hasOwnProperty(input.id)) {
+              input.value = originalAreas.current.values[input.id].toFixed(2); // Restore the original area value
+          }
+      });
+
+      // Recalculate the subtotal
+      recalculateSubtotal();
+    });
+  }
+
+  const bespokeLandProcesses = () => {
+    maputils.fetchLandCoverAnalysis().then((data) => {
+      console.log("Data fetched: ", data)
+
+      let geojsondata = {
+        "type": "FeatureCollection",
+        "features": data.data.map((feature: any) => {
+          return ({
+          type: "Feature",
+          geometry: feature.geom,  // Assuming 'geom' is already in GeoJSON format
+          properties: {
+              class_name: feature.class_name,
+              slope_area: feature.slope_area
+          }
+        })}),
+        "totalFeatures": data?.data?.length,
+        "numberReturned": data?.data?.length,
+        
+      } as GeoJSON.FeatureCollection<GeoJSON.Geometry, { [name: string]: any; }>;
+      if(mapRef.current){
+        let landCoverSrc = mapRef.current.getSource('land-cover-analysis') as mapboxgl.GeoJSONSource
+        if (landCoverSrc) {
+          console.log("LandcoverSource: ", landCoverSrc)
+          landCoverSrc.setData(geojsondata);
+          // let landCoverSrcData = landCoverSrc._data as GeoJSON.FeatureCollection;
+          const features = geojsondata ? geojsondata.features : [];
+  
+          // Get unique land classes from the features
+          const landClasses = getUniqueLandClasses(features);
+  
+          console.log("landClasses: ", landClasses)
+  
+          // Populate the modal with dynamic rows based on the land classes
+          // populateLandAreaForm(landClasses, features);
+          populateAnalysisForm(landClasses, features);
+  
+          
+        }
+
+      }
+
+    })
+  }
+
+  const populateAnalysisForm = (landClasses: any[], features: any[]) => {
+    const formContainer = document.getElementById('bespokeLandAreaForm');
+    formContainer.innerHTML = ""
+    landCoverAnalysisFormFields.current = {landClasses: {}, totalArea: 0.0}
+    let subTotal = 0;
+    landClasses.forEach((landClass, index) => {
+      landCoverAnalysisFormFields.current.landClasses[landClass] = 0.0
+      features.forEach((feature) => {
+        if (feature.properties.class_name === landClass) {
+          const area = turf.area(feature) / 10000; // Convert square meters to hectares
+          landCoverAnalysisFormFields.current.landClasses[landClass] += area;
+          landCoverAnalysisFormFields.current.totalArea += area;
+        }
+      })
+
+      
+      console.log("covering class: ", landClass)
+
+      // Create the row for this land class
+      const rowDiv = document.createElement('div');
+      rowDiv.style.display = 'flex';
+      rowDiv.style.justifyContent = 'space-between';
+      rowDiv.style.marginBottom = '10px';
+
+      const label = document.createElement('label');
+      label.textContent = landClass;
+
+      const input = document.createElement('input');
+      input.type = 'number';
+      input.id = `area${index + 1}`;
+      input.value = landCoverAnalysisFormFields.current.totalArea.toFixed(2);
+      input.style.width = '60px';
+
+      // Add an event listener to update the subtotal when manually changed
+      input.addEventListener('input', recalculateSubtotal);
+
+      rowDiv.appendChild(label);
+      rowDiv.appendChild(input);
+      if(formContainer){
+        console.log("Appending the child here")
+        formContainer.appendChild(rowDiv);
+      }
+      // Add to the subtotal
+      subTotal += landCoverAnalysisFormFields.current.totalArea;
+    })
+    // let subTotalEl = document.getElementById('bespokeSubTotal') as HTMLInputElement;
+    // if(subTotalEl)
+    // subTotalEl.value = subTotal.toFixed(2);
+    let bespokeTotalEl = document.getElementById('bespokeSubTotal') as HTMLInputElement;
+    let bespokeTotalAreaEl = document.getElementById('bespokeTotalArea') as HTMLInputElement;
+    let proRataButtonEl = document.getElementById('bespokeProRataButton') as HTMLButtonElement;
+    let cancelButtonEl = document.getElementById('bespokeCancelButton') as HTMLButtonElement;
+    bespokeTotalEl.value = subTotal.toFixed(2);
+    
     proRataButtonEl.addEventListener('click', function() {
       // Get the values of subtotal and total area
       const subTotal = parseFloat(bespokeTotalEl.value) || 0;
@@ -1594,62 +1840,10 @@ const MapboxPage = () => {
       // Recalculate the subtotal
       recalculateSubtotal();
     });
-  }
-
-  const bespokeLandProcesses = () => {
-    maputils.fetchLandCoverAnalysis().then((data) => {
-      console.log("Data fetched: ", data)
-
-      let geojsondata = {
-        "type": "FeatureCollection",
-        "features": data.data.map((feature: any) => ({
-          type: "Feature",
-          geometry: feature.geom,  // Assuming 'geom' is already in GeoJSON format
-          properties: {
-              class_name: feature.class_name,
-              slope_area: feature.slope_area
-          }
-        })),
-        "totalFeatures": data?.data?.length,
-        "numberReturned": data?.data?.length,
-        
-      }
-      if(mapRef.current){
-        let landCoverSrc = mapRef.current.getSource('land-cover-analysis') as mapboxgl.GeoJSONSource
-        if (landCoverSrc) {
-          landCoverSrc.setData(JSON.stringify(geojsondata));
-          let landCoverSrcData = landCoverSrc._data as GeoJSON.FeatureCollection;
-          const features = landCoverSrcData ? landCoverSrcData.features : [];
-  
-          // Get unique land classes from the features
-          const landClasses = getUniqueLandClasses(features);
-  
-          console.log("landClasses: ", landClasses)
-  
-          // Populate the modal with dynamic rows based on the land classes
-          // populateLandAreaForm(landClasses, features);
-          populateAnalysisForm(landClasses, features);
-  
-          
-        }
-
-      }
-
-    })
-  }
-
-  const populateAnalysisForm = (landClasses: any[], features: any[]) => {
-    landCoverAnalysisFormFields.current = {landClasses: {}, totalArea: 0.0}
-    landClasses.forEach((landClass) => {
-      landCoverAnalysisFormFields.current.landClasses[landClass] = 0.0
-      features.forEach((feature) => {
-        if (feature.properties.class_name === landClass) {
-          const area = turf.area(feature) / 10000; // Convert square meters to hectares
-          landCoverAnalysisFormFields.current.landClasses[landClass] += area;
-          landCoverAnalysisFormFields.current.totalArea += area;
-        }
-      })
-    })
+    cancelButtonEl.addEventListener('click', function() {
+      setShowBespokeLandAreaModal(false)
+      
+    });
   }
 
   const bespokeLandAreaSubmit = () => {
@@ -1742,6 +1936,10 @@ const MapboxPage = () => {
                   <input type="checkbox" id="toggleSlopeLayer" checked={slopeLayer} onChange={onChangeSlopeLayer} />
                   <label htmlFor="toggleSlopeLayer">Bespoke Slope</label>
               </div>
+              <div onClick={() => {activateLayer('user-slope')}} id="user-slope-layer" className={'layer-item p-[5px] mx-[5px] rounded-[5px] cursor-pointer ' + ((activeLayer == "user-slope") ? "bg-cyan-300" : "bg-grey-300")}>
+                  <input type="checkbox" id="toggleUserSlopeLayer" checked={userSlopeLayer} onChange={onChangeUserSlopeLayer} />
+                  <label htmlFor="toggleSlopeLayer">User Slope</label>
+              </div>
               <button id="selectButton" onClick={toggleSelectMode}>Select Feature</button>
               <button id="deselectButton" onClick={deselectFeature}>Deselect Feature</button>
               <button id="copyButton" onClick={copyMultilayerFeature}>Copy Feature</button>
@@ -1758,7 +1956,7 @@ const MapboxPage = () => {
         </div>
         <div id="left-bar" className='col-span-7'>
           <>
-            <div ref={mapContainerRef.current} id="map" style={{ height: '500px' }}></div>
+            <div ref={mapContainerRef} id="map" style={{ height: '500px' }}></div>
             <div
               className="calculation-box hidden"
               style={{
@@ -1799,6 +1997,7 @@ const MapboxPage = () => {
 
       <BespokeLandAreaModal  showModal={showBespokeLandAreaModal}/>
       {showLandAreaModal && <LandAreaModal />}
+      <UserLandBreakdownModal/>
       
     </>
   );
